@@ -67,7 +67,7 @@
             />
           </svg>
         </a>
-        <span class="header__icon">
+        <button class="header__icon">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="22"
@@ -80,7 +80,7 @@
               fill="black"
             />
           </svg>
-        </span>
+        </button>
       </div>
     </div>
   </header>
@@ -93,6 +93,19 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px 0;
+  }
+
+  &__icon {
+    display: inline-flex;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all var(--transition);
+
+    &:hover {
+      transform: rotate(45deg);
+    }
   }
 }
 </style>

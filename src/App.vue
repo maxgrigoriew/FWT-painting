@@ -1,37 +1,142 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import IsHeader from './components/IsHeader.vue'
+import IsPaintingItem from './components/IsPaintingItem.vue'
+import axios from 'axios'
 
 const inputValue = ref('')
 
-const defaultOption = {
-  name: 'Квартира на вторичном рынке',
-  procent: 10,
-  value: 2
-}
+const paintings = ref([])
+const authors = ref([])
+const locations = ref([])
 
-const selected = ref(null)
+const concatArray = computed(() => {
+  const arrayWidthName = paintings.value.map((painting) => {
+    const author = authors.value.find(
+      (author) => painting.authorId === author.id
+    )
+    if (author) {
+      return {
+        ...painting,
+        authorName: author.name
+      }
+    }
+  })
+
+  return arrayWidthName.map((painting) => {
+    const location = locations.value.find(
+      (local) => painting.locationId === local.id
+    )
+    if (location) {
+      return {
+        ...painting,
+        localName: location.location
+      }
+    }
+  })
+})
+
+const sort = reactive({
+  author: null,
+  location: null,
+  created: null
+})
+
 const options = ref([
   { name: 'Квартира на вторичном рынке', procent: 10, value: 2 },
-  { name: 'Квартира в новостройке', procent: 9.9, value: 1 },
-  { name: 'Купить дом', procent: 4.4, value: 3 },
-  { name: 'Построить дом', procent: 5.3, value: 4 },
-  { name: 'Купить землю или дачный дом', procent: 10.3, value: 5 },
-  { name: 'Наличные подо залог жилья', procent: 10.9, value: 6 }
+  { name: 'Квартира в новостройке', procent: 9.9, value: 1 }
 ])
 
-const selectChange = (value) => {
-  selected.value = value
+const sortByAuthors = (value) => {
+  sort.author = value
 }
+const sortByLocation = (value) => {
+  sort.location = value
+}
+const sortByCreated = (value) => {
+  sort.created = value
+}
+
+const fetchPaintings = async () => {
+  const { data } = await axios.get(
+    'https://test-front.framework.team/paintings?_limit=12'
+  )
+  paintings.value = [...data]
+}
+
+const fetchAuthors = async () => {
+  const { data } = await axios.get('https://test-front.framework.team/authors')
+  authors.value = [...data]
+}
+
+const fetchLocations = async () => {
+  const { data } = await axios.get(
+    'https://test-front.framework.team/locations'
+  )
+  locations.value = [...data]
+}
+
+onMounted(() => {
+  fetchPaintings()
+  fetchAuthors()
+  fetchLocations()
+})
 </script>
 
 <template>
   <IsHeader />
-  {{ selected }}
   <div class="container">
-    <is-input v-model="inputValue" placeholder="Name" />
-    <is-select :options="options" :selected="selected" @option="selectChange" />
+    <div class="inputs">
+      <is-input v-model="inputValue" placeholder="Name" />
+      <is-select :options="options" @option="sortByAuthors" />
+      <is-select :options="options" @option="sortByLocation" />
+      <is-select :options="options" @option="sortByCreated" />
+    </div>
+
+    <div class="painting-list">
+      <Is-painting-item
+        v-for="item in concatArray"
+        :key="item.id"
+        :painting="item"
+      />
+    </div>
+
+    <is-pagination style="margin-top: 40px" />
+    <is-loader v-if="!concatArray.length" />
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-bottom: 45px;
+}
+
+.painting-list {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .inputs {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .painting-list {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .painting-list {
+    gap: 20px;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+</style>

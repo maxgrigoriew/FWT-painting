@@ -14,11 +14,7 @@ const selected = computed(() =>
   props.options?.length > 0 ? props.options[0] : null
 )
 
-const open = ref(true)
-
-onMounted(() => {
-  emits('option', selected.value)
-})
+const open = ref(false)
 </script>
 <template>
   <div
@@ -35,7 +31,7 @@ onMounted(() => {
         class="item"
         v-for="(option, i) of options"
         :key="i"
-        @click="[(selected = option), (open = false), $emit('option', option)]"
+        @click="[(selected = option), (open = false), emits('option', option)]"
       >
         <div class="item__title">{{ option.name }}</div>
         <div class="item__procent">{{ option.procent }}</div>
@@ -76,7 +72,8 @@ onMounted(() => {
   border-radius: var(--small-radius);
   border: 1px solid var(--gray);
   background: #fff;
-  padding-left: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
   cursor: pointer;
   user-select: none;
   &.show {

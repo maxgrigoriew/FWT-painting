@@ -1,0 +1,40 @@
+@import '_vars.scss';
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--light);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--gray);
+    border-radius: var(--small-radius);
+    border: 1px solid transparent;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray) var(--light);
+}
+
+body {
+    font-family: var(--font-roboto);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: var(--default);
+}
+
+.container {
+    margin: 0 auto;
+    padding: 0 var(--container-offset);
+    max-width: var(--container-width);
+}

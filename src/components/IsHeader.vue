@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useThemeStore } from './../store/use-theme-store'
+import { useStore } from './../store/use-store'
 
-const themeStore = useThemeStore()
+const themeStore = useStore()
 </script>
 
 <template>
@@ -122,3 +122,4 @@ const themeStore = useThemeStore()
   }
 }
 </style>
+../store/use-store

@@ -1,15 +1,24 @@
 <script setup lang="ts">
+import { watch } from 'vue'
 import { ref } from 'vue'
+import { useStore } from './../store/use-store'
 
-const currentPage = ref(1)
+const store = useStore()
+
+watch(
+  () => store.currentPage,
+  () => {
+    store.fetchPaintings(store.currentPage)
+  }
+)
 </script>
 
 <template>
   <div class="pagination">
     <div
       class="pagination__item"
-      :class="{ disabled: currentPage === 1 }"
-      @click="counter.decrementPage"
+      :class="{ disabled: store.currentPage === 1 }"
+      @click="store.setFirstPage"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -26,8 +35,8 @@ const currentPage = ref(1)
     </div>
     <div
       class="pagination__item"
-      :class="{ disabled: currentPage === 1 }"
-      @click="counter.decrementPage"
+      :class="{ disabled: store.currentPage === 1 }"
+      @click="store.decrementPage"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -44,18 +53,18 @@ const currentPage = ref(1)
     </div>
     <div
       class="pagination__item"
-      :class="{ active: pagination === currentPage }"
-      v-for="(pagination, ind) in 10"
+      :class="{ active: pagination === store.currentPage }"
+      v-for="(pagination, ind) in store.pages"
       :key="ind"
-      @click="counter.setPage(pagination)"
+      @click="store.setPage(pagination)"
     >
       <div>{{ pagination }}</div>
     </div>
 
     <div
       class="pagination__item"
-      :class="{ disabled: true }"
-      @click="counter.incrementPage"
+      :class="{ disabled: store.currentPage === store.pages }"
+      @click="store.incrementPage"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +79,11 @@ const currentPage = ref(1)
         />
       </svg>
     </div>
-    <div class="pagination__item" @click="counter.incrementPage">
+    <div
+      class="pagination__item"
+      :class="{ disabled: store.currentPage === store.pages }"
+      @click="store.setLastPage"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="14"

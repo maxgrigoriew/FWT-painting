@@ -3,6 +3,9 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import IsHeader from './components/IsHeader.vue'
 import IsPaintingItem from './components/IsPaintingItem.vue'
 import axios from 'axios'
+import { useStore } from './store/use-store'
+
+const store = useStore()
 
 const inputValue = ref('')
 
@@ -11,7 +14,7 @@ const authors = ref([])
 const locations = ref([])
 
 const concatArray = computed(() => {
-  const arrayWidthName = paintings.value.map((painting) => {
+  const arrayWidthName = store.paintings.map((painting) => {
     const author = authors.value.find(
       (author) => painting.authorId === author.id
     )
@@ -44,6 +47,10 @@ const sort = reactive({
 
 const options = ref([
   { name: 'Квартира на вторичном рынке', procent: 10, value: 2 },
+  { name: 'Квартира в новостройке', procent: 9.9, value: 1 },
+  { name: 'Квартира в новостройке', procent: 9.9, value: 1 },
+  { name: 'Квартира в новостройке', procent: 9.9, value: 1 },
+  { name: 'Квартира в новостройке', procent: 9.9, value: 1 },
   { name: 'Квартира в новостройке', procent: 9.9, value: 1 }
 ])
 
@@ -55,13 +62,6 @@ const sortByLocation = (value) => {
 }
 const sortByCreated = (value) => {
   sort.created = value
-}
-
-const fetchPaintings = async () => {
-  const { data } = await axios.get(
-    'https://test-front.framework.team/paintings?_limit=12'
-  )
-  paintings.value = [...data]
 }
 
 const fetchAuthors = async () => {
@@ -77,7 +77,7 @@ const fetchLocations = async () => {
 }
 
 onMounted(() => {
-  fetchPaintings()
+  store.fetchPaintings()
   fetchAuthors()
   fetchLocations()
 })
@@ -94,7 +94,7 @@ onMounted(() => {
     </div>
 
     <div class="painting-list">
-      <Is-painting-item
+      <is-painting-item
         v-for="item in concatArray"
         :key="item.id"
         :painting="item"
@@ -102,7 +102,7 @@ onMounted(() => {
     </div>
 
     <is-pagination style="margin-top: 40px" />
-    <is-loader v-if="!concatArray.length" />
+    <is-loader v-if="store.isLoading" />
   </div>
 </template>
 

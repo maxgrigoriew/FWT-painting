@@ -9,10 +9,21 @@
     --small-radius: 8px;
     --large-radius: 20px;
     // colors
+    --dark: #000;
+
     --default: #000;
     --light: #fff;
     --light-gray: rgba(255, 255, 255, 0.75);
+    --accent: rgba(0, 0, 0, 0.3);
+}
+
+
+.light-theme {
+    --default: #fff;
+    --light: #000;
+    --light-gray: rgba(255, 255, 255, 0.75);
     --gray: rgba(0, 0, 0, 0.3);
+    --accent: #fff;
 }
 
 @media (min-width: 1366px) {

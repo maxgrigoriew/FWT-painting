@@ -14,14 +14,13 @@
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: var(--gray);
+    background-color: var(--accent);
     border-radius: var(--small-radius);
-    border: 1px solid transparent;
 }
 
 * {
     scrollbar-width: thin;
-    scrollbar-color: var(--gray) var(--light);
+    scrollbar-color: var(--accent);
 }
 
 body {
@@ -31,6 +30,8 @@ body {
     font-weight: 400;
     line-height: normal;
     color: var(--default);
+    background-color: var(--light);
+    transition: all var(--transition);
 }
 
 img {

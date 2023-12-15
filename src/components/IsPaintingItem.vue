@@ -77,13 +77,13 @@ const props = defineProps(['painting'])
     height: 10%;
     min-height: 30px;
     transition: all var(--transition);
-
-    &-title {
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 20px;
-      text-transform: capitalize;
-    }
+    color: var(--dark);
+  }
+  &__title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+    text-transform: capitalize;
   }
 
   &__bottom {
@@ -96,7 +96,6 @@ const props = defineProps(['painting'])
 
     &-item {
       font-size: 13px;
-
       line-height: 20px;
     }
 

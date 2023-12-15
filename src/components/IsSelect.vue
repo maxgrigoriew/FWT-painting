@@ -34,7 +34,6 @@ const open = ref(false)
         @click="[(selected = option), (open = false), emits('option', option)]"
       >
         <div class="item__title">{{ option.name }}</div>
-        <div class="item__procent">{{ option.procent }}</div>
       </div>
     </div>
   </div>
@@ -61,8 +60,8 @@ const open = ref(false)
   transition: all 0.4s;
   transform: rotate(0) translateY(0);
   transform-origin: top;
-  border: 5px solid var(--gray);
-  border-color: var(--gray) transparent transparent transparent;
+  border: 5px solid var(--accent);
+  border-color: var(--accent) transparent transparent transparent;
   z-index: 100;
 }
 .custom-select.open .selected:after {
@@ -70,8 +69,8 @@ const open = ref(false)
 }
 .selected {
   border-radius: var(--small-radius);
-  border: 1px solid var(--gray);
-  background: #fff;
+  border: 1px solid var(--accent);
+  background: var(--light);
   padding-left: 15px;
   padding-right: 15px;
   cursor: pointer;
@@ -99,11 +98,11 @@ const open = ref(false)
 .items {
   border-radius: 0px 0px 6px 6px;
   overflow: hidden;
-  border-right: 1px solid var(--gray);
-  border-left: 1px solid var(--gray);
-  border-bottom: 1px solid var(--gray);
+  border-right: 1px solid var(--accent);
+  border-left: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
   position: absolute;
-  background-color: #fff;
+  background-color: var(--light);
   left: 0;
   right: 0;
   z-index: 10;
@@ -119,19 +118,13 @@ const open = ref(false)
   display: flex;
   justify-content: space-between;
   align-items: center;
-  scrollbar-color: var(--gray) #fff;
+  scrollbar-color: var(--accent);
   scrollbar-width: thin;
+  color: var(--default);
 
-  &__procent {
-    color: var(--gray) ff;
-    font-weight: 500;
-  }
   &:hover {
     background-color: var(--default);
-    color: #fff;
-    & .item__procent {
-      color: #fff;
-    }
+    color: var(--light);
   }
 }
 </style>

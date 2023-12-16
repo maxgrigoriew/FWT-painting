@@ -9,6 +9,8 @@ export const useStore = defineStore('store', {
       pages: 0,
       currentPage: 1,
       paintings: [],
+      authors: [],
+      locations: [],
       isLightTheme: false,
       isLoading: false
     }
@@ -33,7 +35,33 @@ export const useStore = defineStore('store', {
       } catch (error) {
         console.log(error)
       } finally {
-        this.isLoading = false
+        setTimeout(() => {
+          this.isLoading = false
+        }, 500)
+      }
+
+      return
+    },
+    async fetchAuthors() {
+      try {
+        const response = await axios.get(
+          'https://test-front.framework.team/authors'
+        )
+
+        this.authors = [...response.data]
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async fetchLocations() {
+      try {
+        const response = await axios.get(
+          'https://test-front.framework.team/locations'
+        )
+
+        this.locations = [...response.data]
+      } catch (error) {
+        console.log(error)
       }
     },
 

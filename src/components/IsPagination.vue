@@ -131,7 +131,7 @@ watch(
     }
     &.active {
       background: var(--default);
-      color: #fff;
+      color: var(--light);
     }
     &.disabled {
       pointer-events: none;

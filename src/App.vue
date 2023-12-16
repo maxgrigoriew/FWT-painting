@@ -9,16 +9,14 @@ const store = useStore()
 
 const inputValue = ref('')
 
-const paintings = ref([])
-const authors = ref([])
-const locations = ref([])
-
 const concatArray = computed(() => {
   const arrayWidthName = store.paintings.map((painting) => {
-    const author = authors.value.find(
-      (author) => painting.authorId === author.id
-    )
+    const author = store.authors.find((author) => {
+      return painting.authorId === author.id
+    })
+
     if (author) {
+      console.log(true)
       return {
         ...painting,
         authorName: author.name
@@ -27,7 +25,7 @@ const concatArray = computed(() => {
   })
 
   return arrayWidthName.map((painting) => {
-    const location = locations.value.find(
+    const location = store.locations.find(
       (local) => painting.locationId === local.id
     )
     if (location) {
@@ -64,22 +62,8 @@ const sortByCreated = (value) => {
   sort.created = value
 }
 
-const fetchAuthors = async () => {
-  const { data } = await axios.get('https://test-front.framework.team/authors')
-  authors.value = [...data]
-}
-
-const fetchLocations = async () => {
-  const { data } = await axios.get(
-    'https://test-front.framework.team/locations'
-  )
-  locations.value = [...data]
-}
-
 onMounted(() => {
-  store.fetchPaintings()
-  fetchAuthors()
-  fetchLocations()
+  store.fetchPaintings(), store.fetchAuthors(), store.fetchLocations()
 })
 </script>
 
@@ -89,7 +73,7 @@ onMounted(() => {
     <div class="inputs">
       <is-input v-model="inputValue" placeholder="Name" />
       <is-select :options="options" @option="sortByAuthors" />
-      <is-select :options="options" @option="sortByLocation" />
+      <is-select :options="store.locations" @option="sortByLocation" />
       <is-select :options="options" @option="sortByCreated" />
     </div>
 

@@ -15,7 +15,7 @@ const props = defineProps(['painting'])
     <img
       class="painting__img"
       :src="`https://test-front.framework.team/${props.painting.imageUrl}`"
-      alt=""
+      :alt="props.painting.name"
     />
     <div class="painting__info">
       <h3 class="painting__title">{{ props.painting.name }}</h3>
@@ -73,6 +73,8 @@ const props = defineProps(['painting'])
     left: 0;
     right: 0;
     padding: 5px 15px;
+    border-bottom-left-radius: var(--large-radius);
+    border-bottom-right-radius: var(--large-radius);
     background-color: var(--light-gray);
     height: 10%;
     min-height: 30px;

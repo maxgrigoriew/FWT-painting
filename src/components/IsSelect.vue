@@ -3,7 +3,6 @@ import { computed, onMounted, ref } from 'vue'
 interface Props {
   modelValue: string
   options: []
-  tabindex: number
 }
 const props = defineProps<Props>()
 const emits = defineEmits<{
@@ -11,20 +10,17 @@ const emits = defineEmits<{
 }>()
 
 const selected = computed(() =>
-  props.options?.length > 0 ? props.options[0] : null
+  props.options?.length > 0 ? props.options[0][1] : null
 )
 
 const open = ref(false)
+
+onMounted(() => {})
 </script>
 <template>
-  <div
-    class="custom-select"
-    :tabindex="tabindex"
-    @blur="open = false"
-    :class="{ open: open }"
-  >
+  <div class="custom-select" @blur="open = false" :class="{ open: open }">
     <div :class="`selected${open ? ' show' : ''}`" @click="open = !open">
-      <div class="selected__title">{{ selected.name }}</div>
+      <div class="selected__title">{{ selected }}</div>
     </div>
     <div class="items">
       <div
@@ -33,7 +29,7 @@ const open = ref(false)
         :key="i"
         @click="[(selected = option), (open = false), emits('option', option)]"
       >
-        <div class="item__title">{{ option.name }}</div>
+        <div class="item__title">{{ option }}</div>
       </div>
     </div>
   </div>

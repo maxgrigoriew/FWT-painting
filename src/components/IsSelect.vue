@@ -18,7 +18,11 @@ const open = ref(false)
 onMounted(() => {})
 </script>
 <template>
-  <div class="custom-select" @blur="open = false" :class="{ open: open }">
+  <div
+    class="custom-select"
+    v-click-outside="() => (open = false)"
+    :class="{ open: open }"
+  >
     <div :class="`selected${open ? ' show' : ''}`" @click="open = !open">
       <div class="selected__title">{{ selected }}</div>
     </div>
@@ -53,13 +57,14 @@ onMounted(() => {})
   right: 1em;
   width: 0;
   height: 0;
-  transition: all 0.4s;
+  transition: all var(--transition);
   transform: rotate(0) translateY(0);
   transform-origin: top;
   border: 5px solid var(--accent);
   border-color: var(--accent) transparent transparent transparent;
   z-index: 100;
 }
+
 .custom-select.open .selected:after {
   transform: rotate(180deg) translateY(-3px);
 }
@@ -71,15 +76,16 @@ onMounted(() => {})
   padding-right: 15px;
   cursor: pointer;
   user-select: none;
+  transition: all var(--transition);
   &.show {
     & ~ .items {
       max-height: 250px;
-      transition: all 0.2s;
+      transition: all var(--transition);
       visibility: visible;
     }
   }
 }
-.selected.open {
+.custom-select.open .selected {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -104,7 +110,7 @@ onMounted(() => {})
   z-index: 10;
   max-height: 0;
   overflow-y: scroll;
-  transition: all 0.2s;
+  transition: all var(--transition);
   visibility: hidden;
 }
 .item {

@@ -1,13 +1,15 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
 
+import PaintingServices from './../servises/PaintingServices'
+
 export const useStore = defineStore('store', {
   id: 'store',
   state: () => {
     return {
-      limitPages: 6,
-      pages: 0,
-      currentPage: 2,
+      limitPages: 10,
+      pages: 1,
+      currentPage: 3,
       paintings: [],
       authors: [],
       locations: [],
@@ -51,57 +53,33 @@ export const useStore = defineStore('store', {
     async fetchPaintings() {
       try {
         this.isLoading = true
-        const response = await axios.get(
-          'https://test-front.framework.team/paintings',
-          {
-            params: {
-              _page: this.currentPage,
-              _limit: this.limitPages
-            }
-          }
+        const response = await PaintingServices.getAll(
+          this.currentPage,
+          this.limitPages
         )
-        console.log(this.pages)
         this.pages = Math.ceil(
           +response.headers['x-total-count'] / this.limitPages
         )
-        console.log(this.pages)
         this.paintings = [...response.data]
-
-        return response.data
+        this.isLoading = false
       } catch (error) {
-        console.log(error)
-      } finally {
-        setTimeout(() => {
-          this.isLoading = false
-        }, 500)
+        console.error(error)
       }
-
-      return
     },
     async fetchAuthors() {
       try {
-        const response = await axios.get(
-          'https://test-front.framework.team/authors'
-        )
-
+        const response = await PaintingServices.getAuthors()
         this.authors = [...response.data]
-
-        return response.data
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     },
     async fetchLocations() {
       try {
-        const response = await axios.get(
-          'https://test-front.framework.team/locations'
-        )
-
+        const response = await PaintingServices.getLocations()
         this.locations = [...response.data]
-
-        return response.data
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     },
 

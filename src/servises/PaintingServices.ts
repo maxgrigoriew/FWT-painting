@@ -2,13 +2,20 @@ import { http } from '@/http'
 
 export default class PaintingServices {
   static async getAll(currentPage, limitPages) {
+    console.log(currentPage, limitPages)
     return http.get('/paintings', {
-      _page: currentPage,
-      _limit: limitPages
+      params: {
+        _page: currentPage,
+        _limit: limitPages
+      }
     })
   }
 
-  static async registration(email, password) {
-    return http.post('/login', { email, password, confirmPassword })
+  static async getAuthors() {
+    return http.get('/authors')
+  }
+
+  static async getLocations() {
+    return http.get('/locations')
   }
 }

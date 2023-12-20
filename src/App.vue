@@ -47,7 +47,6 @@ onMounted(() => {
 <template>
   <IsHeader />
   <div class="container">
-    {{ pages }}
     <div class="inputs">
       <is-input v-model="inputValue" placeholder="Name" />
       <is-select :options="options" @option="sortByAuthors" />

@@ -1,8 +1,7 @@
 import { http } from '@/http'
 
 export default class PaintingServices {
-  static async getAll(currentPage, limitPages) {
-    console.log(currentPage, limitPages)
+  static async getPaintings(currentPage = 1, limitPages = 10) {
     return http.get('/paintings', {
       params: {
         _page: currentPage,
@@ -17,5 +16,14 @@ export default class PaintingServices {
 
   static async getLocations() {
     return http.get('/locations')
+  }
+
+  static async getAll() {
+    const [paintings, authors, locations] = await Promise.all([
+      PaintingServices.getPaintings(),
+      PaintingServices.getAuthors(),
+      PaintingServices.getLocations()
+    ])
+    return [paintings, authors, locations]
   }
 }

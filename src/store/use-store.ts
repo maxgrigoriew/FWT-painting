@@ -18,9 +18,6 @@ export const useStore = defineStore('store', {
     }
   },
   getters: {
-    getPages: (state) => {
-      return state.pages
-    },
     concatArray: (state) => {
       const arrayWidthName = state.paintings.map((painting) => {
         const author = state.authors.find((author) => {
@@ -50,10 +47,28 @@ export const useStore = defineStore('store', {
   },
 
   actions: {
+    async getAll() {
+      try {
+        this.isLoading = true
+        const response = await PaintingServices.getAll()
+
+        this.painting = [...response[0].data]
+        this.authors = [...response[1].data]
+        this.locations = [...response[2].data]
+
+        this.pages = Math.ceil(
+          +response[0].headers['x-total-count'] / this.limitPages
+        )
+
+        this.isLoading = false
+      } catch (e) {
+        console.error(e)
+      }
+    },
     async fetchPaintings() {
       try {
         this.isLoading = true
-        const response = await PaintingServices.getAll(
+        const response = await PaintingServices.getPaintings(
           this.currentPage,
           this.limitPages
         )

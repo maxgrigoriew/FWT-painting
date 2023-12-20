@@ -5,7 +5,7 @@ import IsPaintingItem from './components/IsPaintingItem.vue'
 import axios from 'axios'
 import { useStore } from './store/use-store'
 import { storeToRefs } from 'pinia'
-
+import PaintingServices from './servises/PaintingServices'
 const store = useStore()
 const { pages } = storeToRefs(store)
 const inputValue = ref('')
@@ -40,13 +40,14 @@ const sortByCreated = (value) => {
 }
 
 onMounted(() => {
-  store.fetchAllData()
+  store.getAll()
 })
 </script>
 
 <template>
   <IsHeader />
   <div class="container">
+    {{ store.painting }}
     <div class="inputs">
       <is-input v-model="inputValue" placeholder="Name" />
       <is-select :options="options" @option="sortByAuthors" />
@@ -56,7 +57,7 @@ onMounted(() => {
 
     <div class="painting-list">
       <is-painting-item
-        v-for="item in store.concatArray"
+        v-for="item in store.painting"
         :key="item.id"
         :painting="item"
       />

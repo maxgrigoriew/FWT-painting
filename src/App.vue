@@ -4,38 +4,15 @@ import IsHeader from './components/IsHeader.vue'
 import IsPaintingItem from './components/IsPaintingItem.vue'
 import axios from 'axios'
 import { useStore } from './store/use-store'
+import { storeToRefs } from 'pinia'
 
 const store = useStore()
-
+const { pages } = storeToRefs(store)
 const inputValue = ref('')
 
-const concatArray = computed(() => {
-  const arrayWidthName = store.paintings.map((painting) => {
-    const author = store.authors.find((author) => {
-      return painting.authorId === author.id
-    })
-
-    if (author) {
-      console.log(true)
-      return {
-        ...painting,
-        authorName: author.name
-      }
-    }
-  })
-
-  return arrayWidthName.map((painting) => {
-    const location = store.locations.find(
-      (local) => painting.locationId === local.id
-    )
-    if (location) {
-      return {
-        ...painting,
-        localName: location.location
-      }
-    }
-  })
-})
+const paintings = ref([])
+const authors = ref([])
+const locations = ref([])
 
 const sort = reactive({
   author: null,
@@ -63,13 +40,14 @@ const sortByCreated = (value) => {
 }
 
 onMounted(() => {
-  store.fetchPaintings(), store.fetchAuthors(), store.fetchLocations()
+  store.fetchAllData()
 })
 </script>
 
 <template>
   <IsHeader />
   <div class="container">
+    {{ pages }}
     <div class="inputs">
       <is-input v-model="inputValue" placeholder="Name" />
       <is-select :options="options" @option="sortByAuthors" />
@@ -79,13 +57,18 @@ onMounted(() => {
 
     <div class="painting-list">
       <is-painting-item
-        v-for="item in concatArray"
+        v-for="item in store.concatArray"
         :key="item.id"
         :painting="item"
       />
     </div>
 
-    <is-pagination style="margin-top: 40px" />
+    <is-pagination
+      style="margin-top: 40px"
+      :pages="pages"
+      :currentPage="store.currentPage"
+      @fetchData="store.fetchAllData"
+    />
     <is-loader v-if="store.isLoading" />
   </div>
 </template>

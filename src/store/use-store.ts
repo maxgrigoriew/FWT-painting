@@ -1,13 +1,13 @@
 import axios from 'axios'
-
 import { defineStore } from 'pinia'
 
 export const useStore = defineStore('store', {
+  id: 'store',
   state: () => {
     return {
       limitPages: 6,
       pages: 0,
-      currentPage: 1,
+      currentPage: 2,
       paintings: [],
       authors: [],
       locations: [],
@@ -15,8 +15,40 @@ export const useStore = defineStore('store', {
       isLoading: false
     }
   },
+  getters: {
+    getPages: (state) => {
+      return state.pages
+    },
+    concatArray: (state) => {
+      const arrayWidthName = state.paintings.map((painting) => {
+        const author = state.authors.find((author) => {
+          return painting.authorId === author.id
+        })
+
+        if (author) {
+          return {
+            ...painting,
+            authorName: author.name
+          }
+        }
+      })
+
+      return arrayWidthName.map((painting) => {
+        const location = state.locations.find(
+          (local) => painting.locationId === local.id
+        )
+        if (location) {
+          return {
+            ...painting,
+            localName: location.location
+          }
+        }
+      })
+    }
+  },
+
   actions: {
-    async fetchPaintings(currentPage = 1) {
+    async fetchPaintings() {
       try {
         this.isLoading = true
         const response = await axios.get(
@@ -28,10 +60,14 @@ export const useStore = defineStore('store', {
             }
           }
         )
+        console.log(this.pages)
         this.pages = Math.ceil(
-          response.headers['x-total-count'] / this.limitPages
+          +response.headers['x-total-count'] / this.limitPages
         )
+        console.log(this.pages)
         this.paintings = [...response.data]
+
+        return response.data
       } catch (error) {
         console.log(error)
       } finally {
@@ -49,6 +85,8 @@ export const useStore = defineStore('store', {
         )
 
         this.authors = [...response.data]
+
+        return response.data
       } catch (error) {
         console.log(error)
       }
@@ -60,9 +98,29 @@ export const useStore = defineStore('store', {
         )
 
         this.locations = [...response.data]
+
+        return response.data
       } catch (error) {
         console.log(error)
       }
+    },
+
+    async fetchAllData() {
+      axios
+        .all([
+          this.fetchPaintings(),
+          this.fetchAuthors(),
+          this.fetchLocations()
+        ])
+        .then(
+          axios.spread(
+            (paintings_response, authors_response, locations_response) => {
+              this.paintings = [...paintings_response]
+              this.authors = [...authors_response]
+              this.locations = [...locations_response]
+            }
+          )
+        )
     },
 
     setPage(currentPage) {

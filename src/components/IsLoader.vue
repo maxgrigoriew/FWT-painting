@@ -19,6 +19,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #a1a0a0b1;
+  background-color: #ffffff;
 }
 </style>

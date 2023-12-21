@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { computed, watch } from 'vue'
-import { ref } from 'vue'
-import { useStore } from './../store/use-store'
+import { storeToRefs } from 'pinia';
+import { computed, watch } from 'vue';
+import { ref } from 'vue';
+import { useStore } from './../store/use-store';
 
-const store = useStore()
+const store = useStore();
 
-const props = defineProps(['pages', 'currentPage'])
-const emits = defineEmits(['fetchData'])
+const props = defineProps(['pages', 'currentPage']);
+const emits = defineEmits(['fetchData']);
 
 watch(
   () => props.currentPage,
   () => {
-    emits('fetchData')
+    emits('fetchData');
   }
-)
+);
 </script>
 
 <template>

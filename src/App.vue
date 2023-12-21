@@ -1,23 +1,17 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue'
-import IsHeader from './components/IsHeader.vue'
-import IsPaintingItem from './components/IsPaintingItem.vue'
-import axios from 'axios'
-import { useStore } from './store/use-store'
+import { onMounted, reactive, ref } from 'vue'
+import IsHeader from '@/components/IsHeader.vue'
+import IsPaintingItem from '@/components/IsPaintingItem.vue'
+import { useStore } from '@/store/use-store'
 import { storeToRefs } from 'pinia'
-import PaintingServices from './servises/PaintingServices'
 const store = useStore()
 const { pages } = storeToRefs(store)
 const inputValue = ref('')
 
-const paintings = ref([])
-const authors = ref([])
-const locations = ref([])
-
 const sort = reactive({
-  author: null,
-  location: null,
-  created: null
+  author: '',
+  location: '',
+  created: ''
 })
 
 const options = ref([
@@ -29,25 +23,24 @@ const options = ref([
   { name: 'Квартира в новостройке', procent: 9.9, value: 1 }
 ])
 
-const sortByAuthors = (value) => {
+const sortByAuthors = (value: string) => {
   sort.author = value
 }
-const sortByLocation = (value) => {
+const sortByLocation = (value: string) => {
   sort.location = value
 }
-const sortByCreated = (value) => {
+const sortByCreated = (value: string) => {
   sort.created = value
 }
 
 onMounted(() => {
-  store.getAll()
+  store.fetchAll()
 })
 </script>
 
 <template>
   <IsHeader />
   <div class="container">
-    {{ store.painting }}
     <div class="inputs">
       <is-input v-model="inputValue" placeholder="Name" />
       <is-select :options="options" @option="sortByAuthors" />
@@ -57,7 +50,7 @@ onMounted(() => {
 
     <div class="painting-list">
       <is-painting-item
-        v-for="item in store.painting"
+        v-for="item in store.concatArray"
         :key="item.id"
         :painting="item"
       />
@@ -67,7 +60,7 @@ onMounted(() => {
       style="margin-top: 40px"
       :pages="pages"
       :currentPage="store.currentPage"
-      @fetchData="store.fetchAllData"
+      @fetchData="store.fetchAll"
     />
     <is-loader v-if="store.isLoading" />
   </div>

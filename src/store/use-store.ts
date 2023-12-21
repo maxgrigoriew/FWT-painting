@@ -3,18 +3,50 @@ import { defineStore } from 'pinia';
 
 import PaintingServices from './../servises/PaintingServices';
 
+interface Painting {
+  id: number;
+  authorId: string;
+  created: string;
+  imageUrl: string;
+  locationId: number;
+  name: string;
+}
+
+interface Author {
+  id: number;
+  name: string;
+}
+
+interface Location {
+  id: number;
+  location: string;
+}
+
+declare module 'pinia' {
+  export interface PiniaCustomProperties {
+    fetchAll: () => void;
+    fetchPaintings: (
+      currentPage: number,
+      limitPages: number,
+      searchQuery: string
+    ) => void;
+    concatArray: Painting[];
+  }
+}
+
 export const useStore = defineStore('store', {
   id: 'painting',
   state: () => {
     return {
       limitPages: 12,
       pages: 1,
-      currentPage: 3,
+      currentPage: 1,
       paintings: [],
       authors: [],
       locations: [],
       isLightTheme: false,
-      isLoading: false
+      isLoading: false,
+      searchQuery: ''
     };
   },
   getters: {
@@ -47,12 +79,13 @@ export const useStore = defineStore('store', {
   },
 
   actions: {
-    async fetchPaintings(currentPage, limitPages) {
+    async fetchPaintings(currentPage, limitPages, searchQuery) {
       try {
         this.isLoading = true;
         const response = await PaintingServices.getPaintings(
           currentPage,
-          limitPages
+          limitPages,
+          searchQuery
         );
         console.log(response);
         this.pages = Math.ceil(
@@ -86,7 +119,11 @@ export const useStore = defineStore('store', {
         this.isLoading = true;
 
         const [paintings, authors, locations] = await Promise.all([
-          PaintingServices.getPaintings(this.currentPage, this.limitPages),
+          PaintingServices.getPaintings(
+            this.currentPage,
+            this.limitPages,
+            this.searchQuery
+          ),
           PaintingServices.getAuthors(),
           PaintingServices.getLocations()
         ]);
@@ -132,6 +169,10 @@ export const useStore = defineStore('store', {
     setTheme() {
       document.querySelector('body')?.classList.toggle('light-theme');
       localStorage.setItem('is-light-theme', this.isLightTheme);
+    },
+    changeSearchQuery(value) {
+      console.log(value);
+      this.searchQuery = value;
     }
   }
 });

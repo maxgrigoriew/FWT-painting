@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
-import IsHeader from '@/components/IsHeader.vue'
-import IsPaintingItem from '@/components/IsPaintingItem.vue'
-import { useStore } from '@/store/use-store'
-import { storeToRefs } from 'pinia'
-const store = useStore()
-const { pages } = storeToRefs(store)
-const inputValue = ref('')
+import { computed, onMounted, reactive, ref, watch } from 'vue';
+import IsHeader from '@/components/IsHeader.vue';
+import IsPaintingItem from '@/components/IsPaintingItem.vue';
+import { useStore } from '@/store/use-store';
+import { storeToRefs } from 'pinia';
+const store = useStore();
+const { pages } = storeToRefs(store);
+import debounce from './utils/debounce';
 
 const sort = reactive({
   author: '',
   location: '',
   created: ''
-})
+});
 
 const options = ref([
   { name: 'Квартира на вторичном рынке', procent: 10, value: 2 },
@@ -21,41 +21,59 @@ const options = ref([
   { name: 'Квартира в новостройке', procent: 9.9, value: 1 },
   { name: 'Квартира в новостройке', procent: 9.9, value: 1 },
   { name: 'Квартира в новостройке', procent: 9.9, value: 1 }
-])
+]);
 
 const sortByAuthors = (value: string) => {
-  sort.author = value
-}
+  sort.author = value;
+};
 const sortByLocation = (value: string) => {
-  sort.location = value
-}
+  sort.location = value;
+};
 const sortByCreated = (value: string) => {
-  sort.created = value
-}
+  sort.created = value;
+};
+
+watch(
+  () => store.searchQuery,
+  debounce(function (newVal: string) {
+    store.searchQuery = newVal;
+    store.fetchAll();
+  }, 500)
+);
+
+const searchQuery = computed({
+  get() {
+    return store.searchQuery;
+  },
+  set(val) {
+    store.searchQuery = val;
+  }
+});
 
 onMounted(() => {
-  store.fetchAll()
-})
+  store.fetchAll();
+});
 </script>
 
 <template>
   <IsHeader />
   <div class="container">
+    {{ searchQuery }}
     <div class="inputs">
-      <is-input v-model="inputValue" placeholder="Name" />
+      <is-input :value="searchQuery" v-model="searchQuery" placeholder="Name" />
       <is-select :options="options" @option="sortByAuthors" />
       <is-select :options="store.locations" @option="sortByLocation" />
       <is-select :options="options" @option="sortByCreated" />
     </div>
 
-    <div class="painting-list">
+    <div class="painting-list" v-if="!store.concatArray.length">
       <is-painting-item
         v-for="item in store.concatArray"
         :key="item.id"
         :painting="item"
       />
     </div>
-
+    <div class="painting-list" v-else>Список пуст</div>
     <is-pagination
       style="margin-top: 40px"
       :pages="pages"

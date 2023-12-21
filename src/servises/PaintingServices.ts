@@ -1,11 +1,16 @@
 import { http } from '@/http';
 
 export default class PaintingServices {
-  static async getPaintings(currentPage = 1, limitPages = 12) {
+  static async getPaintings(
+    currentPage = 1,
+    limitPages = 12,
+    searchQuery = ''
+  ) {
     return http.get('/paintings', {
       params: {
         _page: currentPage,
-        _limit: limitPages
+        _limit: limitPages,
+        q: searchQuery
       }
     });
   }

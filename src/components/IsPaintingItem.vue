@@ -1,13 +1,5 @@
 <script setup lang="ts">
-// interface Props {
-//   authorId: string
-//   created: string
-//   id: number
-//   imageUrl: string
-//   locationId: number
-//   name: string
-// }
-const props = defineProps(['painting'])
+const props = defineProps(['painting']);
 </script>
 
 <template>

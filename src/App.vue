@@ -2,6 +2,7 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import IsHeader from '@/components/IsHeader.vue';
 import IsPaintingItem from '@/components/IsPaintingItem.vue';
+import IsPaintingList from '@/components/IsPaintingList.vue';
 import { useStore } from '@/store/use-store';
 import { storeToRefs } from 'pinia';
 const store = useStore();
@@ -58,7 +59,6 @@ onMounted(() => {
 <template>
   <IsHeader />
   <div class="container">
-    {{ searchQuery }}
     <div class="inputs">
       <is-input :value="searchQuery" v-model="searchQuery" placeholder="Name" />
       <is-select :options="options" @option="sortByAuthors" />
@@ -66,14 +66,7 @@ onMounted(() => {
       <is-select :options="options" @option="sortByCreated" />
     </div>
 
-    <div class="painting-list" v-if="!store.concatArray.length">
-      <is-painting-item
-        v-for="item in store.concatArray"
-        :key="item.id"
-        :painting="item"
-      />
-    </div>
-    <div class="painting-list" v-else>Список пуст</div>
+    <is-painting-list :paintings="store.concatArray" />
     <is-pagination
       style="margin-top: 40px"
       :pages="pages"
@@ -92,29 +85,10 @@ onMounted(() => {
   padding-bottom: 45px;
 }
 
-.painting-list {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: 1fr;
-}
-
 @media (min-width: 768px) {
   .inputs {
     flex-direction: row;
     gap: 20px;
-  }
-
-  .painting-list {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (min-width: 1024px) {
-  .painting-list {
-    gap: 20px;
-    grid-template-columns: 1fr 1fr 1fr;
   }
 }
 </style>

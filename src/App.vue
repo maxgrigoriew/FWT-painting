@@ -68,12 +68,14 @@ onMounted(() => {
     <div class="inputs">
       <is-input :value="searchQuery" v-model="searchQuery" placeholder="Name" />
       <is-select
+        class="author-select"
         v-model="store.authorSelect.name"
         :options="store.mapAuthors"
         @option="store.setSelectAuthor"
         >Author</is-select
       >
       <is-select
+        class="location-select"
         v-model="sort.location"
         :options="store.mapLocations"
         @option="store.setSelectAuthor"
@@ -99,6 +101,14 @@ onMounted(() => {
   flex-direction: column;
   gap: 15px;
   padding-bottom: 45px;
+}
+
+.author-select {
+  z-index: 4;
+}
+
+.location-select {
+  z-index: 3;
 }
 
 @media (min-width: 768px) {

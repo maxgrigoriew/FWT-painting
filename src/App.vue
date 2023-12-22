@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import IsHeader from '@/components/IsHeader.vue';
-import IsPaintingItem from '@/components/IsPaintingItem.vue';
 import IsPaintingList from '@/components/IsPaintingList.vue';
 import { useStore } from '@/store/use-store';
 import { storeToRefs } from 'pinia';
@@ -42,6 +41,13 @@ watch(
   }, 500)
 );
 
+watch(
+  () => store.authorSelect.id,
+  () => {
+    store.fetchAll();
+  }
+);
+
 const searchQuery = computed({
   get() {
     return store.searchQuery;
@@ -61,8 +67,18 @@ onMounted(() => {
   <div class="container">
     <div class="inputs">
       <is-input :value="searchQuery" v-model="searchQuery" placeholder="Name" />
-      <is-select :options="options" @option="sortByAuthors" />
-      <is-select :options="store.locations" @option="sortByLocation" />
+      <is-select
+        v-model="store.authorSelect.name"
+        :options="store.mapAuthors"
+        @option="store.setSelectAuthor"
+        >Author</is-select
+      >
+      <is-select
+        v-model="sort.location"
+        :options="store.mapLocations"
+        @option="store.setSelectAuthor"
+        >Location</is-select
+      >
       <is-select :options="options" @option="sortByCreated" />
     </div>
 

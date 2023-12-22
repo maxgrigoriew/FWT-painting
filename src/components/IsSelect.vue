@@ -1,39 +1,44 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue';
 interface Props {
-  modelValue: string
-  options: []
+  modelValue: string;
+  options: [];
 }
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 const emits = defineEmits<{
-  option: [value: string]
-}>()
+  option: [value: string];
+}>();
 
 const selected = computed(() =>
-  props.options?.length > 0 ? props.options[0][1] : null
-)
+  props.options?.length > 0 ? props.options[0].name : null
+);
 
-const open = ref(false)
+const open = ref(false);
 
-onMounted(() => {})
+onMounted(() => {});
 </script>
 <template>
   <div
     class="custom-select"
     v-click-outside="() => (open = false)"
-    :class="{ open: open }"
+    :class="{ open }"
   >
     <div :class="`selected${open ? ' show' : ''}`" @click="open = !open">
-      <div class="selected__title">{{ selected }}</div>
+      <div class="selected__title">
+        {{ modelValue }}
+        <slot v-if="!modelValue"></slot>
+      </div>
     </div>
     <div class="items">
       <div
         class="item"
         v-for="(option, i) of options"
         :key="i"
-        @click="[(selected = option), (open = false), emits('option', option)]"
+        @click="
+          [(selected = option.name), (open = false), emits('option', option)]
+        "
       >
-        <div class="item__title">{{ option }}</div>
+        <div class="item__title">{{ option.name }}</div>
       </div>
     </div>
   </div>
@@ -73,10 +78,16 @@ onMounted(() => {})
   border: 1px solid var(--accent);
   background: var(--light);
   padding-left: 15px;
-  padding-right: 15px;
+  padding-right: 30px;
   cursor: pointer;
   user-select: none;
   transition: all var(--transition);
+
+  &__title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
   &.show {
     & ~ .items {
       max-height: 250px;
@@ -123,6 +134,12 @@ onMounted(() => {})
   scrollbar-color: var(--accent);
   scrollbar-width: thin;
   color: var(--default);
+
+  &__title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 
   &:hover {
     background-color: var(--default);

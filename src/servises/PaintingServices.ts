@@ -4,13 +4,15 @@ export default class PaintingServices {
   static async getPaintings(
     currentPage = 1,
     limitPages = 12,
-    searchQuery = ''
+    searchQuery = '',
+    authorId = 1
   ) {
     return http.get('/paintings', {
       params: {
         _page: currentPage,
         _limit: limitPages,
-        q: searchQuery
+        q: searchQuery,
+        authorId: authorId
       }
     });
   }
@@ -25,7 +27,7 @@ export default class PaintingServices {
 
   static async getAll() {
     const [paintings, authors, locations] = await Promise.all([
-      PaintingServices.getPaintings(1, 12),
+      PaintingServices.getPaintings(1, 12, '', 1),
       PaintingServices.getAuthors(),
       PaintingServices.getLocations()
     ]);

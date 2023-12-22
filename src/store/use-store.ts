@@ -28,14 +28,17 @@ declare module 'pinia' {
     fetchPaintings: (
       currentPage: number,
       limitPages: number,
-      searchQuery: string
+      searchQuery: string,
+      fetchPaintings: number
     ) => void;
     setFirstPage: () => void;
     setLastPage: () => void;
     decrementPage: () => void;
     incrementPage: () => void;
     setPage: (pagination: number) => void;
+    setSelectAuthor: (author: Author) => void;
     concatArray: Painting[];
+    authorId: null | number;
   }
 }
 
@@ -51,10 +54,26 @@ export const useStore = defineStore('store', {
       locations: [],
       isLightTheme: false,
       isLoading: false,
-      searchQuery: ''
+      searchQuery: '',
+      authorSelect: {
+        id: null,
+        name: null
+      }
     };
   },
   getters: {
+    mapAuthors: (state) => {
+      return state.authors.map((item) => ({
+        id: item.id,
+        name: item.name
+      }));
+    },
+    mapLocations: (state) => {
+      return state.locations.map((item) => ({
+        id: item.id,
+        name: item.location
+      }));
+    },
     concatArray: (state) => {
       const arrayWidthName = state.paintings.map((painting) => {
         const author = state.authors.find((author) => {
@@ -84,13 +103,14 @@ export const useStore = defineStore('store', {
   },
 
   actions: {
-    async fetchPaintings(currentPage, limitPages, searchQuery) {
+    async fetchPaintings(currentPage, limitPages, searchQuery, authorId) {
       try {
         this.isLoading = true;
         const response = await PaintingServices.getPaintings(
           currentPage,
           limitPages,
-          searchQuery
+          searchQuery,
+          authorId
         );
         console.log(response);
         this.pages = Math.ceil(
@@ -127,7 +147,8 @@ export const useStore = defineStore('store', {
           PaintingServices.getPaintings(
             this.currentPage,
             this.limitPages,
-            this.searchQuery
+            this.searchQuery,
+            this.authorSelect.id
           ),
           PaintingServices.getAuthors(),
           PaintingServices.getLocations()
@@ -178,6 +199,9 @@ export const useStore = defineStore('store', {
     changeSearchQuery(value) {
       console.log(value);
       this.searchQuery = value;
+    },
+    setSelectAuthor(id: number) {
+      this.authorSelect = id;
     }
   }
 });

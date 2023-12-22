@@ -6,7 +6,7 @@ const props = defineProps(['paintings']);
 
 <template>
   <div class="painting-wrapper">
-    <div class="painting-list" v-if="paintings.length">
+    <div class="painting-list" v-if="props.paintings.length">
       <is-painting-item
         v-for="item in paintings"
         :key="item.id"

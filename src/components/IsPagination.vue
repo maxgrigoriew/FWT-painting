@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { computed, watch } from 'vue';
-import { ref } from 'vue';
+import { watch } from 'vue';
 import { useStore } from './../store/use-store';
 
 const store = useStore();
@@ -85,6 +83,14 @@ watch(
     cursor: pointer;
     font-size: 18px;
     font-weight: 500;
+    transition: all var(--transition);
+
+    &:hover {
+      background-color: var(--pagination-hover);
+    }
+    &.disabled:hover {
+      background-color: var(--light);
+    }
 
     &:first-child {
       border-top-left-radius: var(--small-radius);

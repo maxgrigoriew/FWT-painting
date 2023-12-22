@@ -30,6 +30,11 @@ declare module 'pinia' {
       limitPages: number,
       searchQuery: string
     ) => void;
+    setFirstPage: () => void;
+    setLastPage: () => void;
+    decrementPage: () => void;
+    incrementPage: () => void;
+    setPage: (pagination: number) => void;
     concatArray: Painting[];
   }
 }

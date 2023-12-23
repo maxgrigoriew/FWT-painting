@@ -1,11 +1,11 @@
 <script setup lang="ts">
 interface Props {
-  modelValue: string
+  modelValue: string;
 }
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 const emits = defineEmits<{
-  'update:modelValue': [value: string]
-}>()
+  'update:modelValue': [value: string];
+}>();
 </script>
 
 <template>
@@ -25,7 +25,11 @@ const emits = defineEmits<{
   padding: 15px 15px 14px;
   border-radius: var(--small-radius);
   border: 1px solid var(--accent);
-  background: var(--light);
-  color: var(--accent);
+  background: transparent;
+  color: var(--default);
+
+  &::placeholder {
+    color: var(--input-placeholder);
+  }
 }
 </style>

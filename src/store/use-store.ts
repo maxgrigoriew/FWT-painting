@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { defineStore } from 'pinia';
 
 import PaintingServices from './../servises/PaintingServices';
@@ -20,6 +19,10 @@ interface Location {
   id: null | number;
   name: null | string;
 }
+interface Created {
+  from: null | string;
+  before: null | string;
+}
 
 declare module 'pinia' {
   export interface PiniaCustomProperties {
@@ -39,6 +42,8 @@ declare module 'pinia' {
     setSelectAuthor: (author: Author) => void;
     locationSelect: Location;
     setSelectLocation: (location: Location) => void;
+    createdSelect: Created;
+    setSelectCreated: (created: Created) => void;
     concatArray: Painting[];
     authorId: null | number;
   }
@@ -64,6 +69,10 @@ export const useStore = defineStore('store', {
       locationSelect: {
         id: null,
         name: null
+      },
+      createdSelect: {
+        from: '',
+        before: ''
       }
     };
   },
@@ -114,7 +123,9 @@ export const useStore = defineStore('store', {
       limitPages,
       searchQuery,
       authorId,
-      locationId
+      locationId,
+      createdSelectFrom,
+      createdSelectBefore
     ) {
       try {
         this.isLoading = true;
@@ -123,7 +134,9 @@ export const useStore = defineStore('store', {
           limitPages,
           searchQuery,
           authorId,
-          locationId
+          locationId,
+          createdSelectFrom,
+          createdSelectBefore
         );
         console.log(response);
         this.pages = Math.ceil(
@@ -162,7 +175,9 @@ export const useStore = defineStore('store', {
             this.limitPages,
             this.searchQuery,
             this.authorSelect.id,
-            this.locationSelect.id
+            this.locationSelect.id,
+            this.createdSelect.from,
+            this.createdSelect.before
           ),
           PaintingServices.getAuthors(),
           PaintingServices.getLocations()
@@ -219,6 +234,9 @@ export const useStore = defineStore('store', {
     },
     setSelectLocation(id: number) {
       this.locationSelect = id;
+    },
+    setSelectCreated(created: Created) {
+      this.createdSelect = { ...created };
     }
   }
 });

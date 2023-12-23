@@ -28,16 +28,16 @@ watch(
     </div>
     <div
       class="pagination__item"
-      :class="{ disabled: store.currentPage === 1 }"
+      :class="{ disabled: store.currentPage === 1 || !store.pages }"
       @click="store.decrementPage"
     >
-      <svg class="pagination__arrow">
+      <svg class="pagination__arrow" width="14" height="14">
         <use xlink:href="./../assets/images/sprite.svg#arrow-left-left"></use>
       </svg>
     </div>
     <div
       class="pagination__item"
-      :class="{ active: pagination === store.currentPage }"
+      :class="{ active: pagination === store.currentPage || !store.pages }"
       v-for="(pagination, ind) in pages"
       :key="ind"
       @click="store.setPage(pagination)"
@@ -47,7 +47,7 @@ watch(
 
     <div
       class="pagination__item"
-      :class="{ disabled: store.currentPage === store.pages }"
+      :class="{ disabled: store.currentPage === store.pages || !store.pages }"
       @click="store.incrementPage"
     >
       <svg class="pagination__arrow" width="14" height="14">
@@ -56,7 +56,7 @@ watch(
     </div>
     <div
       class="pagination__item"
-      :class="{ disabled: store.currentPage === store.pages }"
+      :class="{ disabled: store.currentPage === store.pages || !store.pages }"
       @click="store.setLastPage"
     >
       <svg class="pagination__arrow" width="14" height="14">

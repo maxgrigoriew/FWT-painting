@@ -2,11 +2,13 @@ import { http } from '@/http';
 
 export default class PaintingServices {
   static async getPaintings(
-    currentPage = 1,
-    limitPages = 12,
-    searchQuery = '',
+    currentPage,
+    limitPages,
+    searchQuery,
     authorId,
-    locationId
+    locationId,
+    createdSelectFrom,
+    createdSelectBefore
   ) {
     return http.get('/paintings', {
       params: {
@@ -14,7 +16,9 @@ export default class PaintingServices {
         _limit: limitPages,
         q: searchQuery,
         authorId: authorId,
-        locationId: locationId
+        locationId: locationId,
+        created_gte: createdSelectFrom,
+        created_lte: createdSelectBefore
       }
     });
   }
@@ -29,7 +33,7 @@ export default class PaintingServices {
 
   static async getAll() {
     const [paintings, authors, locations] = await Promise.all([
-      PaintingServices.getPaintings(1, 12, '', 1),
+      PaintingServices.getPaintings(),
       PaintingServices.getAuthors(),
       PaintingServices.getLocations()
     ]);

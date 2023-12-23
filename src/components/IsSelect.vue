@@ -1,8 +1,19 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import { useStore } from '@/store/use-store';
+import { storeToRefs } from 'pinia';
+const store = useStore();
+
+interface Created {
+  from: null | string;
+  before: null | string;
+}
+
 interface Props {
   modelValue: string;
   options: [];
+  isFilter: boolean;
+  filter: Created;
 }
 const props = defineProps<Props>();
 const emits = defineEmits<{
@@ -39,15 +50,21 @@ onMounted(() => {});
       <use xlink:href="./../assets/images/sprite.svg#close"></use>
     </svg>
     <div class="items">
-      <div
-        class="item"
-        v-for="option of options"
-        :key="option.id"
-        @click="
-          [(selected = option.name), (open = false), emits('option', option)]
-        "
-      >
-        <div class="item__title">{{ option.name }}</div>
+      <div class="items__select" v-if="!isFilter">
+        <div
+          class="item"
+          v-for="option of options"
+          :key="option.id"
+          @click="
+            [(selected = option.name), (open = false), emits('option', option)]
+          "
+        >
+          <div class="item__title">{{ option.name }}</div>
+        </div>
+      </div>
+      <div v-else class="items__filter">
+        <is-input placeholder="from" v-model="store.createdSelect.from" />
+        <is-input placeholder="before" v-model="store.createdSelect.before" />
       </div>
     </div>
   </div>
@@ -85,12 +102,11 @@ onMounted(() => {});
 .selected {
   border-radius: var(--small-radius);
   border: 1px solid var(--accent);
-  background: var(--light);
+  background: transparent;
   padding-left: 15px;
   padding-right: 44px;
   cursor: pointer;
   user-select: none;
-  transition: all var(--transition);
 
   &__title {
     text-overflow: ellipsis;
@@ -140,6 +156,24 @@ onMounted(() => {});
   overflow-y: scroll;
   transition: all var(--transition);
   visibility: hidden;
+
+  &__filter {
+    position: relative;
+    display: flex;
+    gap: 32px;
+    padding: 20px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 12px;
+      height: 0.5px;
+      background-color: var(--default);
+      transform: translate(-50%, -50%);
+    }
+  }
 }
 .item {
   padding: 0 10px;

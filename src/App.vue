@@ -8,31 +8,6 @@ const store = useStore();
 const { pages } = storeToRefs(store);
 import debounce from './utils/debounce';
 
-const sort = reactive({
-  author: '',
-  location: '',
-  created: ''
-});
-
-const options = ref([
-  { name: 'Квартира на вторичном рынке', procent: 10, value: 2 },
-  { name: 'Квартира в новостройке', procent: 9.9, value: 1 },
-  { name: 'Квартира в новостройке', procent: 9.9, value: 1 },
-  { name: 'Квартира в новостройке', procent: 9.9, value: 1 },
-  { name: 'Квартира в новостройке', procent: 9.9, value: 1 },
-  { name: 'Квартира в новостройке', procent: 9.9, value: 1 }
-]);
-
-const sortByAuthors = (value: string) => {
-  sort.author = value;
-};
-const sortByLocation = (value: string) => {
-  sort.location = value;
-};
-const sortByCreated = (value: string) => {
-  sort.created = value;
-};
-
 watch(
   () => store.searchQuery,
   debounce(function (newVal: string) {
@@ -42,7 +17,12 @@ watch(
 );
 
 watch(
-  () => [store.authorSelect.id, store.locationSelect.id],
+  () => [
+    store.authorSelect.id,
+    store.locationSelect.id,
+    store.createdSelect.from,
+    store.createdSelect.before
+  ],
   () => {
     store.fetchAll();
   }
@@ -81,7 +61,12 @@ onMounted(() => {
         @option="store.setSelectLocation"
         >Location</is-select
       >
-      <is-select :options="options" @option="sortByCreated" />
+      <is-select
+        :is-filter="true"
+        :filter="store.createdSelect"
+        @option="store.setSelectCreated"
+        >Created</is-select
+      >
     </div>
 
     <is-painting-list :paintings="store.concatArray" />

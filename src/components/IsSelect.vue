@@ -29,11 +29,20 @@ onMounted(() => {});
         <slot v-if="!modelValue"></slot>
       </div>
     </div>
+    <svg
+      v-if="open && modelValue"
+      @click="[(open = false), emits('option', '')]"
+      class="selected__close"
+      width="8"
+      height="8"
+    >
+      <use xlink:href="./../assets/images/sprite.svg#close"></use>
+    </svg>
     <div class="items">
       <div
         class="item"
-        v-for="(option, i) of options"
-        :key="i"
+        v-for="option of options"
+        :key="option.id"
         @click="
           [(selected = option.name), (open = false), emits('option', option)]
         "
@@ -78,7 +87,7 @@ onMounted(() => {});
   border: 1px solid var(--accent);
   background: var(--light);
   padding-left: 15px;
-  padding-right: 30px;
+  padding-right: 44px;
   cursor: pointer;
   user-select: none;
   transition: all var(--transition);
@@ -94,6 +103,14 @@ onMounted(() => {});
       transition: all var(--transition);
       visibility: visible;
     }
+  }
+
+  &__close {
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
   }
 }
 .custom-select.open .selected {

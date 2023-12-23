@@ -42,7 +42,7 @@ watch(
 );
 
 watch(
-  () => store.authorSelect.id,
+  () => [store.authorSelect.id, store.locationSelect.id],
   () => {
     store.fetchAll();
   }
@@ -76,9 +76,9 @@ onMounted(() => {
       >
       <is-select
         class="location-select"
-        v-model="sort.location"
+        v-model="store.locationSelect.name"
         :options="store.mapLocations"
-        @option="store.setSelectAuthor"
+        @option="store.setSelectLocation"
         >Location</is-select
       >
       <is-select :options="options" @option="sortByCreated" />

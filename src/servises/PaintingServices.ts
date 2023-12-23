@@ -5,14 +5,16 @@ export default class PaintingServices {
     currentPage = 1,
     limitPages = 12,
     searchQuery = '',
-    authorId = 1
+    authorId,
+    locationId
   ) {
     return http.get('/paintings', {
       params: {
         _page: currentPage,
         _limit: limitPages,
         q: searchQuery,
-        authorId: authorId
+        authorId: authorId,
+        locationId: locationId
       }
     });
   }

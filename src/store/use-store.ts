@@ -13,13 +13,12 @@ interface Painting {
 }
 
 interface Author {
-  id: number;
-  name: string;
+  id: null | number;
+  name: null | string;
 }
-
 interface Location {
-  id: number;
-  location: string;
+  id: null | number;
+  name: null | string;
 }
 
 declare module 'pinia' {
@@ -36,7 +35,10 @@ declare module 'pinia' {
     decrementPage: () => void;
     incrementPage: () => void;
     setPage: (pagination: number) => void;
+    authorSelect: Author;
     setSelectAuthor: (author: Author) => void;
+    locationSelect: Location;
+    setSelectLocation: (location: Location) => void;
     concatArray: Painting[];
     authorId: null | number;
   }
@@ -56,6 +58,10 @@ export const useStore = defineStore('store', {
       isLoading: false,
       searchQuery: '',
       authorSelect: {
+        id: null,
+        name: null
+      },
+      locationSelect: {
         id: null,
         name: null
       }
@@ -103,14 +109,21 @@ export const useStore = defineStore('store', {
   },
 
   actions: {
-    async fetchPaintings(currentPage, limitPages, searchQuery, authorId) {
+    async fetchPaintings(
+      currentPage,
+      limitPages,
+      searchQuery,
+      authorId,
+      locationId
+    ) {
       try {
         this.isLoading = true;
         const response = await PaintingServices.getPaintings(
           currentPage,
           limitPages,
           searchQuery,
-          authorId
+          authorId,
+          locationId
         );
         console.log(response);
         this.pages = Math.ceil(
@@ -148,7 +161,8 @@ export const useStore = defineStore('store', {
             this.currentPage,
             this.limitPages,
             this.searchQuery,
-            this.authorSelect.id
+            this.authorSelect.id,
+            this.locationSelect.id
           ),
           PaintingServices.getAuthors(),
           PaintingServices.getLocations()
@@ -202,6 +216,9 @@ export const useStore = defineStore('store', {
     },
     setSelectAuthor(id: number) {
       this.authorSelect = id;
+    },
+    setSelectLocation(id: number) {
+      this.locationSelect = id;
     }
   }
 });

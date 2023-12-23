@@ -31,7 +31,7 @@ watch(
       :class="{ disabled: store.currentPage === 1 }"
       @click="store.decrementPage"
     >
-      <svg class="pagination__arrow" width="14" height="14">
+      <svg class="pagination__arrow">
         <use xlink:href="./../assets/images/sprite.svg#arrow-left-left"></use>
       </svg>
     </div>

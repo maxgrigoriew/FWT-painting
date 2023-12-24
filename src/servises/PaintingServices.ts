@@ -10,16 +10,24 @@ export default class PaintingServices {
     createdSelectFrom,
     createdSelectBefore
   ) {
-    return http.get('/paintings', {
-      params: {
-        _page: currentPage,
-        _limit: limitPages,
-        q: searchQuery,
-        authorId: authorId,
-        locationId: locationId,
-        created_gte: createdSelectFrom,
-        created_lte: createdSelectBefore
+    const params = {
+      _page: currentPage,
+      _limit: limitPages,
+      q: searchQuery,
+      authorId: authorId,
+      locationId: locationId,
+      created_gte: createdSelectFrom,
+      created_lte: createdSelectBefore
+    };
+
+    for (const item in params) {
+      if (params[item] === '' || params[item] === null) {
+        delete params[item];
       }
+    }
+
+    return http.get('/paintings', {
+      params
     });
   }
 

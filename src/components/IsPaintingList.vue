@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IsPaintingItem from './IsPaintingItem.vue';
+import IsPaintingListItem from './IsPaintingListItem.vue';
 
 const props = defineProps(['paintings']);
 </script>
@@ -7,7 +7,7 @@ const props = defineProps(['paintings']);
 <template>
   <div class="painting-wrapper">
     <div class="painting-list" v-if="props.paintings.length">
-      <is-painting-item
+      <is-painting-list-item
         v-for="item in paintings"
         :key="item.id"
         :painting="item"

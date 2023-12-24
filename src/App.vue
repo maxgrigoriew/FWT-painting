@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
-import IsHeader from '@/components/IsHeader.vue';
-import IsPaintingList from '@/components/IsPaintingList.vue';
+import IsHeader from '@/components/IsHeader/IsHeader.vue';
+import IsPaintingList from '@/components/IsPaintingList/IsPaintingList.vue';
 import { useStore } from '@/store/use-store';
-import { storeToRefs } from 'pinia';
 const store = useStore();
-const { pages } = storeToRefs(store);
 import debounce from './utils/debounce';
 
 watch(

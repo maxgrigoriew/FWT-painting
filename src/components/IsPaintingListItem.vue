@@ -5,9 +5,16 @@ const props = defineProps(['painting']);
 <template>
   <div class="painting">
     <img
+      v-if="props.painting"
       class="painting__img"
       :src="`https://test-front.framework.team/${props.painting.imageUrl}`"
       :alt="props.painting.name"
+    />
+    <img
+      v-else
+      class="painting__img"
+      src="./../assets/images/not-found.jpg"
+      :alt="props.painting.imageUrl"
     />
     <div class="painting__info">
       <h3 class="painting__title">{{ props.painting.name }}</h3>

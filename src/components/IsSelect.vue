@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { useStore } from '@/store/use-store';
-import { storeToRefs } from 'pinia';
-const store = useStore();
 
 interface Created {
   from: null | string;
@@ -10,7 +7,9 @@ interface Created {
 }
 
 interface Props {
-  modelValue: string;
+  from: string;
+  before: string;
+  modelValue: string | Created;
   options: [];
   isFilter: boolean;
   filter: Created;
@@ -18,6 +17,8 @@ interface Props {
 const props = defineProps<Props>();
 const emits = defineEmits<{
   option: [value: string];
+  'update:from': [value: string];
+  'update:before': [value: string];
 }>();
 
 const selected = computed(() =>
@@ -63,8 +64,16 @@ onMounted(() => {});
         </div>
       </div>
       <div v-else class="items__filter">
-        <is-input placeholder="from" v-model="store.createdSelect.from" />
-        <is-input placeholder="before" v-model="store.createdSelect.before" />
+        <is-input
+          placeholder="from"
+          :value="from"
+          @input="emits('update:from', $event.target.value)"
+        />
+        <is-input
+          placeholder="before"
+          :value="before"
+          @input="emits('update:before', $event.target.value)"
+        />
       </div>
     </div>
   </div>

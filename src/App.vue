@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import IsHeader from '@/components/IsHeader.vue';
 import IsPaintingList from '@/components/IsPaintingList.vue';
 import { useStore } from '@/store/use-store';
@@ -11,31 +11,25 @@ import debounce from './utils/debounce';
 watch(
   () => store.searchQuery,
   debounce(function (newVal: string) {
-    store.searchQuery = newVal;
+    store.setSearchQuery(newVal);
     store.fetchAll();
   }, 500)
 );
 
 watch(
-  () => [
-    store.authorSelect.id,
-    store.locationSelect.id,
-    store.createdSelect.from,
-    store.createdSelect.before
-  ],
+  store.createdSelect,
+  debounce(function (newVal) {
+    store.createdSelect.from = newVal.from;
+    store.createdSelect.before = newVal.before;
+    store.fetchAll();
+  }, 500)
+);
+watch(
+  () => [store.authorSelect.id, store.locationSelect.id],
   () => {
     store.fetchAll();
   }
 );
-
-const searchQuery = computed({
-  get() {
-    return store.searchQuery;
-  },
-  set(val) {
-    store.searchQuery = val;
-  }
-});
 
 onMounted(() => {
   store.fetchAll();
@@ -46,7 +40,7 @@ onMounted(() => {
   <IsHeader />
   <div class="container">
     <div class="inputs">
-      <is-input :value="searchQuery" v-model="searchQuery" placeholder="Name" />
+      <is-input v-model="store.searchQuery" placeholder="Name" />
       <is-select
         class="author-select"
         v-model="store.authorSelect.name"
@@ -63,8 +57,8 @@ onMounted(() => {
       >
       <is-select
         :is-filter="true"
-        :filter="store.createdSelect"
-        @option="store.setSelectCreated"
+        v-model:from="store.createdSelect.from"
+        v-model:before="store.createdSelect.before"
         >Created</is-select
       >
     </div>
@@ -72,7 +66,7 @@ onMounted(() => {
     <is-painting-list :paintings="store.concatArray" />
     <is-pagination
       style="margin-top: 40px"
-      :pages="pages"
+      :pages="store.pages"
       :currentPage="store.currentPage"
       @fetchData="store.fetchAll"
     />

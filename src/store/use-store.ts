@@ -225,8 +225,7 @@ export const useStore = defineStore('store', {
       document.querySelector('body')?.classList.toggle('light-theme');
       localStorage.setItem('is-light-theme', this.isLightTheme);
     },
-    changeSearchQuery(value) {
-      console.log(value);
+    setSearchQuery(value) {
       this.searchQuery = value;
     },
     setSelectAuthor(id: number) {

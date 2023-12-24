@@ -20,7 +20,7 @@ interface State {
   authorSelect: Author;
   setSelectAuthor: (author: object.Author) => void;
   locationSelect: Location;
-  setSelectLocation: (location: Location) => void;
+  setSelectLocation: (location: Location | null) => void;
   createdSelect: Created;
   setSelectCreated: (created: Created) => void;
   concatArray: Painting[];
@@ -30,6 +30,7 @@ interface State {
   mapAuthors: Author[];
   mapLocations: Location[];
   changeTheme: () => void;
+  paintings: Painting[];
 }
 
 export const useStore = defineStore('store', {
@@ -149,7 +150,7 @@ export const useStore = defineStore('store', {
       }
     },
 
-    setPage(currentPage) {
+    setPage(currentPage: number) {
       this.currentPage = currentPage;
     },
     setFirstPage() {
@@ -177,14 +178,14 @@ export const useStore = defineStore('store', {
       document.querySelector('body')?.classList.toggle('light-theme');
       localStorage.setItem('is-light-theme', this.isLightTheme);
     },
-    setSearchQuery(value) {
+    setSearchQuery(value: string) {
       this.searchQuery = value;
     },
-    setSelectAuthor(id: number) {
-      this.authorSelect = id;
+    setSelectAuthor(option: Author | null) {
+      this.authorSelect = option;
     },
-    setSelectLocation(id: number) {
-      this.locationSelect = id;
+    setSelectLocation(option: Location | null) {
+      this.locationSelect = option;
     },
     setSelectCreated(created: Created) {
       this.createdSelect = { ...created };

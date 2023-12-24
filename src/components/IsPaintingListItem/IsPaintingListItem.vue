@@ -18,7 +18,7 @@ const props = defineProps<Props>();
     <img
       v-else
       :class="$style.painting__img"
-      src="./../assets/images/not-found.jpg"
+      src="@/assets/images/not-found.jpg"
     />
     <div :class="$style.painting__info">
       <h3 :class="$style.painting__title">{{ props.painting.name }}</h3>

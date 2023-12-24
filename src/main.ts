@@ -1,4 +1,4 @@
-import components from '@/global-components.ts';
+import components from '@/global-components';
 import vClickOutside from 'click-outside-vue3';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';

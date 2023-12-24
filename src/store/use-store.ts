@@ -1,57 +1,40 @@
 import { defineStore } from 'pinia';
-
 import PaintingServices from './../servises/PaintingServices';
+import {
+  type Author,
+  type Created,
+  type Location,
+  type Painting
+} from './../types/index';
 
-interface Painting {
-  id: number;
-  authorId: string;
-  created: string;
-  imageUrl: string;
-  locationId: number;
-  name: string;
-}
-
-interface Author {
-  id: null | number;
-  name: null | string;
-}
-interface Location {
-  id: null | number;
-  name: null | string;
-}
-interface Created {
-  from: null | string;
-  before: null | string;
-}
-
-declare module 'pinia' {
-  export interface PiniaCustomProperties {
-    fetchAll: () => void;
-    fetchPaintings: (
-      currentPage: number,
-      limitPages: number,
-      searchQuery: string,
-      fetchPaintings: number
-    ) => void;
-    setFirstPage: () => void;
-    setLastPage: () => void;
-    decrementPage: () => void;
-    incrementPage: () => void;
-    setPage: (pagination: number) => void;
-    authorSelect: Author;
-    setSelectAuthor: (author: Author) => void;
-    locationSelect: Location;
-    setSelectLocation: (location: Location) => void;
-    createdSelect: Created;
-    setSelectCreated: (created: Created) => void;
-    concatArray: Painting[];
-    authorId: null | number;
-  }
+interface State {
+  pages: number;
+  currentPage: number;
+  isLoading: boolean;
+  fetchAll: () => void;
+  setFirstPage: () => void;
+  setLastPage: () => void;
+  decrementPage: () => void;
+  incrementPage: () => void;
+  setPage: (pagination: number) => void;
+  authorSelect: Author;
+  setSelectAuthor: (author: object.Author) => void;
+  locationSelect: Location;
+  setSelectLocation: (location: Location) => void;
+  createdSelect: Created;
+  setSelectCreated: (created: Created) => void;
+  concatArray: Painting[];
+  authorId: null | number;
+  searchQuery: string;
+  setSearchQuery: (value: string) => void;
+  mapAuthors: Author[];
+  mapLocations: Location[];
+  changeTheme: () => void;
 }
 
 export const useStore = defineStore('store', {
   id: 'painting',
-  state: () => {
+  state: (): State => {
     return {
       limitPages: 12,
       pages: 1,
@@ -63,12 +46,12 @@ export const useStore = defineStore('store', {
       isLoading: false,
       searchQuery: '',
       authorSelect: {
-        id: null,
-        name: null
+        id: '',
+        name: ''
       },
       locationSelect: {
-        id: null,
-        name: null
+        id: '',
+        name: ''
       },
       createdSelect: {
         from: '',
@@ -118,36 +101,6 @@ export const useStore = defineStore('store', {
   },
 
   actions: {
-    async fetchPaintings(
-      currentPage,
-      limitPages,
-      searchQuery,
-      authorId,
-      locationId,
-      createdSelectFrom,
-      createdSelectBefore
-    ) {
-      try {
-        this.isLoading = true;
-        const response = await PaintingServices.getPaintings(
-          currentPage,
-          limitPages,
-          searchQuery,
-          authorId,
-          locationId,
-          createdSelectFrom,
-          createdSelectBefore
-        );
-        console.log(response);
-        this.pages = Math.ceil(
-          +response.headers['x-total-count'] / this.limitPages
-        );
-        this.paintings = [...response.data];
-        this.isLoading = false;
-      } catch (error) {
-        console.error(error);
-      }
-    },
     async fetchAuthors() {
       try {
         const response = await PaintingServices.getAuthors();
@@ -168,7 +121,6 @@ export const useStore = defineStore('store', {
     async fetchAll() {
       try {
         this.isLoading = true;
-
         const [paintings, authors, locations] = await Promise.all([
           PaintingServices.getPaintings(
             this.currentPage,

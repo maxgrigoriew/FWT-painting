@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import type { Painting } from '@/types';
 import IsPaintingListItem from './../IsPaintingListItem/IsPaintingListItem.vue';
 
-const props = defineProps(['paintings']);
+interface Props {
+  paintings: Painting[];
+}
+const props = defineProps<Props>();
 </script>
 
 <template>

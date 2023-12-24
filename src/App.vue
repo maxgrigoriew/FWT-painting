@@ -16,7 +16,7 @@ watch(
 
 watch(
   store.createdSelect,
-  debounce(function (newVal) {
+  debounce(function (newVal: { from: string; before: string }) {
     store.createdSelect.from = newVal.from;
     store.createdSelect.before = newVal.before;
     store.fetchAll();
@@ -36,6 +36,7 @@ onMounted(() => {
 
 <template>
   <IsHeader />
+
   <div class="container">
     <div class="inputs">
       <is-input v-model="store.searchQuery" placeholder="Name" />

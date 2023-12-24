@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useStore } from '@/store/use-store';
 
-const themeStore = useStore();
+const store = useStore();
 </script>
 
 <template>
@@ -13,7 +13,7 @@ const themeStore = useStore();
             <use xlink:href="@/assets/images/sprite.svg#logo"></use>
           </svg>
         </a>
-        <button :class="$style.header__icon" @click="themeStore.changeTheme">
+        <button :class="$style.header__icon" @click="store.changeTheme">
           <svg :class="$style.pagination__arrow1" width="22" height="22">
             <use xlink:href="@/assets/images/sprite.svg#theme"></use>
           </svg>

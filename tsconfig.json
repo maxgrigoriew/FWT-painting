@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "module": "es6",
+  },
   "files": [],
   "references": [
     {

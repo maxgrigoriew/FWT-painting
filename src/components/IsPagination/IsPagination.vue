@@ -2,10 +2,16 @@
 import { watch } from 'vue';
 import { useStore } from '@/store/use-store';
 
+interface Props {
+  pages: number;
+  currentPage: number;
+}
 const store = useStore();
 
-const props = defineProps(['pages', 'currentPage']);
-const emits = defineEmits(['fetchData']);
+const props = defineProps<Props>();
+const emits = defineEmits<{
+  fetchData: [value: void];
+}>();
 
 watch(
   () => props.currentPage,

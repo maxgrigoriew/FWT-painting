@@ -1,11 +1,16 @@
 <script setup lang="ts">
-const props = defineProps(['painting']);
+import type { Painting } from '@/types';
+
+interface Props {
+  painting: Painting;
+}
+const props = defineProps<Props>();
 </script>
 
 <template>
   <div :class="$style.painting">
     <img
-      v-if="props.painting"
+      v-if="props.painting.imageUrl"
       :class="$style.painting__img"
       :src="`https://test-front.framework.team/${props.painting.imageUrl}`"
       :alt="props.painting.name"
@@ -14,7 +19,6 @@ const props = defineProps(['painting']);
       v-else
       :class="$style.painting__img"
       src="./../assets/images/not-found.jpg"
-      :alt="props.painting.imageUrl"
     />
     <div :class="$style.painting__info">
       <h3 :class="$style.painting__title">{{ props.painting.name }}</h3>

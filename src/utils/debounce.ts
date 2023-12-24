@@ -1,10 +1,11 @@
 export default function debounce(fn, delay) {
-  let timeoutID = null;
+  let time = null;
   return function () {
-    clearTimeout(timeoutID);
-    const args = arguments;
+    clearTimeout(time);
+    const args = Array.prototype.slice.call(arguments);
+    console.log(args);
     const that = this;
-    timeoutID = setTimeout(function () {
+    time = setTimeout(function () {
       fn.apply(that, args);
     }, delay);
   };

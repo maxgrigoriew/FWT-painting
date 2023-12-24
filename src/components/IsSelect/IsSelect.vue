@@ -1,28 +1,24 @@
 <script setup lang="ts">
+import type { Author, Created, Location } from '@/types';
 import { computed, onMounted, ref } from 'vue';
 
-interface Created {
-  from: null | string;
-  before: null | string;
-}
-
 interface Props {
-  from: string;
-  before: string;
-  modelValue: string | Created;
-  options: [];
-  isFilter: boolean;
-  filter: Created;
+  from?: string;
+  before?: string;
+  modelValue?: string;
+  options?: Author[] | Location[];
+  isFilter?: boolean;
+  filter?: Created;
 }
 const props = defineProps<Props>();
 const emits = defineEmits<{
-  option: [value: string];
+  option: [value: Author | Location | null];
   'update:from': [value: string];
   'update:before': [value: string];
 }>();
 
 const selected = computed(() =>
-  props.options?.length > 0 ? props.options[0].name : null
+  props.options && props.options?.length > 0 ? props.options[0].name : null
 );
 
 const open = ref(false);
@@ -45,7 +41,7 @@ onMounted(() => {});
     </div>
     <svg
       v-if="open && modelValue"
-      @click="[(open = false), emits('option', '')]"
+      @click="[(open = false), emits('option', null)]"
       :class="$style.selected__close"
       width="8"
       height="8"

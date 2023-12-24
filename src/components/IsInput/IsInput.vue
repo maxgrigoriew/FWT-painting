@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface Props {
-  modelValue: string;
+  modelValue?: string;
 }
 const props = defineProps<Props>();
 const emits = defineEmits<{
@@ -14,7 +14,9 @@ const emits = defineEmits<{
     type="text"
     placeholder="Введите текст"
     :value="props.modelValue"
-    @input="emits('update:modelValue', $event.target.value)"
+    @input="
+      emits('update:modelValue', ($event.target as HTMLInputElement).value)
+    "
   />
 </template>
 <style module src="./IsInput.scss"></style>

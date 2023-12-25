@@ -1,48 +1,50 @@
 :root {
-    --font-roboto: 'Roboto', sans-serif;
-    --content-width: 100%;
-    --container-offset: 20px;
-    --container-width: calc(var(--content-width) + (var(--container-offset) * 2));
-    --max-offset: calc(max(calc((100vw - var(--content-width)) / 2), var(--container-offset)) * -1);
+  --font-roboto: 'Roboto', sans-serif;
+  --content-width: 100%;
+  --container-offset: 20px;
+  --container-width: calc(var(--content-width) + (var(--container-offset) * 2));
+  --max-offset: calc(
+    max(calc((100vw - var(--content-width)) / 2), var(--container-offset)) * -1
+  );
 
-    --transition: 0.3s;
-    --small-radius: 8px;
-    --large-radius: 20px;
-    // colors
-    --dark: #000;
+  --transition: 0.3s;
+  --small-radius: 8px;
+  --large-radius: 20px;
+  // colors
+  --dark: #000;
 
-    --default: #000;
-    --light: #fff;
-    --light-gray: rgba(255, 255, 255, 0.75);
-    --accent: rgba(0, 0, 0, 0.3);
-    --input-placeholder: rgba(0, 0, 0, 0.3);
-    --pagination-hover: #EDEDED;
+  --default: #000;
+  --light: #fff;
+  --light-gray: rgba(255, 255, 255, 0.75);
+  --accent: rgba(0, 0, 0, 0.3);
+  --input-placeholder: rgba(0, 0, 0, 0.3);
+  --pagination-hover: #ededed;
 }
 
 .light-theme {
-    --default: #fff;
-    --light: #000;
-    --light-gray: rgba(255, 255, 255, 0.75);
-    --gray: rgba(0, 0, 0, 0.3);
-    --accent: #fff;
-    --input-placeholder: rgba(255, 255, 255, 0.30);
-    --pagination-hover: #464646;
+  --default: #fff;
+  --light: #000;
+  --light-gray: rgba(255, 255, 255, 0.75);
+  --gray: rgba(0, 0, 0, 0.3);
+  --accent: #fff;
+  --input-placeholder: rgba(255, 255, 255, 0.3);
+  --pagination-hover: #464646;
 }
 
 @media (min-width: 1366px) {
-    :root {
-        --content-width: 1120px;
-    }
+  :root {
+    --content-width: 1120px;
+  }
 }
 
 @media (min-width: 1024px) {
-    :root {
-        --container-offset: 42px;
-    }
+  :root {
+    --container-offset: 42px;
+  }
 }
 
 @media (min-width: 768px) {
-    :root {
-        --container-offset: 34px;
-    }
+  :root {
+    --container-offset: 34px;
+  }
 }

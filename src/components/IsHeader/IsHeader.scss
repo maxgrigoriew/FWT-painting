@@ -1,32 +1,32 @@
 .header {
-    &__inner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px 0;
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+  }
+
+  &__logo {
+    & svg path {
+      stroke: var(--default);
+    }
+  }
+
+  &__icon {
+    display: inline-flex;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all var(--transition);
+    fill: var(--default);
+
+    &:hover {
+      transform: rotate(45deg);
     }
 
-    &__logo {
-        & svg path {
-            stroke: var(--default);
-        }
+    & svg path {
+      fill: var(--default);
     }
-
-    &__icon {
-        display: inline-flex;
-        padding: 0;
-        border: none;
-        background-color: transparent;
-        cursor: pointer;
-        transition: all var(--transition);
-        fill: var(--default);
-
-        &:hover {
-            transform: rotate(45deg);
-        }
-
-        & svg path {
-            fill: var(--default);
-        }
-    }
+  }
 }

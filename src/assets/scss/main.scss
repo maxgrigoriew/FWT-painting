@@ -1,46 +1,45 @@
 @import '_vars.scss';
 
 * {
-    box-sizing: border-box;
-    margin: 0;
+  box-sizing: border-box;
+  margin: 0;
 }
 
 *::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 
 *::-webkit-scrollbar-track {
-    background: var(--light);
-
+  background: var(--light);
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: var(--accent);
-    border-radius: var(--small-radius);
+  background-color: var(--accent);
+  border-radius: var(--small-radius);
 }
 
 * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent);
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent);
 }
 
 body {
-    font-family: var(--font-roboto);
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    color: var(--default);
-    background-color: var(--light);
-    transition: all var(--transition);
+  font-family: var(--font-roboto);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--default);
+  background-color: var(--light);
+  transition: all var(--transition);
 }
 
 img {
-    display: block;
+  display: block;
 }
 
 .container {
-    margin: 0 auto;
-    padding: 0 var(--container-offset);
-    max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--container-offset);
+  max-width: var(--container-width);
 }

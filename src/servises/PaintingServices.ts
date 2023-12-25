@@ -2,13 +2,13 @@ import { http } from '@/http';
 
 export default class PaintingServices {
   static async getPaintings(
-    currentPage,
-    limitPages,
-    searchQuery,
-    authorId,
-    locationId,
-    createdSelectFrom,
-    createdSelectBefore
+    currentPage?: number,
+    limitPages?: number,
+    searchQuery?: string,
+    authorId?: number | null,
+    locationId?: number | null,
+    createdSelectFrom?: string,
+    createdSelectBefore?: string
   ) {
     const params = {
       _page: currentPage,
@@ -21,8 +21,8 @@ export default class PaintingServices {
     };
 
     for (const item in params) {
-      if (params[item] === '' || params[item] === null) {
-        delete params[item];
+      if (!params[item as keyof typeof params]) {
+        delete params[item as keyof typeof params];
       }
     }
 

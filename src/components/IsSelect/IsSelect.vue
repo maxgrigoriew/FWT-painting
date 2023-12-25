@@ -12,7 +12,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 const emits = defineEmits<{
-  option: [value: Author | Location | null];
+  option: [value: Author | Location | string];
   'update:from': [value: string];
   'update:before': [value: string];
 }>();
@@ -41,7 +41,7 @@ onMounted(() => {});
     </div>
     <svg
       v-if="open && modelValue"
-      @click="[(open = false), emits('option', null)]"
+      @click="[(open = false), emits('option', '')]"
       :class="$style.selected__close"
       width="8"
       height="8"
@@ -53,7 +53,7 @@ onMounted(() => {});
         <div
           :class="$style.item"
           v-for="option of options"
-          :key="option.id"
+          :key="option.name"
           @click="
             [(selected = option.name), (open = false), emits('option', option)]
           "

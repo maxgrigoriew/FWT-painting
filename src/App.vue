@@ -4,7 +4,7 @@ import IsHeader from '@/components/IsHeader/IsHeader.vue';
 import IsPaintingList from '@/components/IsPaintingList/IsPaintingList.vue';
 import { useStore } from '@/store/use-store';
 const store = useStore();
-import debounce from './utils/debounce';
+import { debounce } from './utils/debounce';
 
 watch(
   () => store.searchQuery,
@@ -23,7 +23,7 @@ watch(
   }, 500)
 );
 watch(
-  () => [store.authorSelect.id, store.locationSelect.id],
+  () => [store.authorSelect?.id, store.locationSelect?.id],
   () => {
     store.fetchAll();
   }

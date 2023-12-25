@@ -1,8 +1,9 @@
 import components from '@/global-components';
+// @ts-ignore
 import vClickOutside from 'click-outside-vue3';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
-import App from './App.vue';
+import App from '@/App.vue';
 import './assets/scss/main.scss';
 
 const app = createApp(App);

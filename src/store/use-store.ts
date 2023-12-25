@@ -4,6 +4,7 @@ import {
   type Author,
   type Created,
   type Location,
+  type MapLocation,
   type Painting
 } from './../types/index';
 
@@ -18,7 +19,7 @@ interface State {
   incrementPage: () => void;
   setPage: (pagination: number) => void;
   authorSelect: Author;
-  setSelectAuthor: (author: object.Author) => void;
+  setSelectAuthor: (author: Author) => void;
   locationSelect: Location;
   setSelectLocation: (location: Location | null) => void;
   createdSelect: Created;
@@ -31,11 +32,15 @@ interface State {
   mapLocations: Location[];
   changeTheme: () => void;
   paintings: Painting[];
+  limitPages: number;
+  authors: Author[];
+  locations: MapLocation[];
+  isLightTheme: boolean;
 }
 
 export const useStore = defineStore('store', {
-  id: 'painting',
   state: (): State => {
+    //@ts-ignore
     return {
       limitPages: 12,
       pages: 1,
@@ -47,11 +52,11 @@ export const useStore = defineStore('store', {
       isLoading: false,
       searchQuery: '',
       authorSelect: {
-        id: '',
+        id: null,
         name: ''
       },
       locationSelect: {
-        id: '',
+        id: null,
         name: ''
       },
       createdSelect: {
@@ -68,9 +73,9 @@ export const useStore = defineStore('store', {
       }));
     },
     mapLocations: (state) => {
-      return state.locations.map((item) => ({
-        id: item.id,
-        name: item.location
+      return state.locations.map((location: MapLocation) => ({
+        id: location.id,
+        name: location.location
       }));
     },
     concatArray: (state) => {
@@ -87,13 +92,13 @@ export const useStore = defineStore('store', {
         }
       });
 
-      return arrayWidthName.map((painting) => {
+      return arrayWidthName.map((locationArg) => {
         const location = state.locations.find(
-          (local) => painting.locationId === local.id
+          (local) => locationArg?.locationId === local.id
         );
         if (location) {
           return {
-            ...painting,
+            ...locationArg,
             localName: location.location
           };
         }
@@ -127,8 +132,8 @@ export const useStore = defineStore('store', {
             this.currentPage,
             this.limitPages,
             this.searchQuery,
-            this.authorSelect.id,
-            this.locationSelect.id,
+            this.authorSelect?.id,
+            this.locationSelect?.id,
             this.createdSelect.from,
             this.createdSelect.before
           ),
@@ -169,22 +174,22 @@ export const useStore = defineStore('store', {
       }
       this.currentPage -= 1;
     },
-    changeTheme() {
-      this.isLightTheme = !this.isLightTheme;
-      document.querySelector('body')?.classList.toggle('light-theme');
-      localStorage.setItem('is-light-theme', this.isLightTheme);
-    },
-    setTheme() {
-      document.querySelector('body')?.classList.toggle('light-theme');
-      localStorage.setItem('is-light-theme', this.isLightTheme);
-    },
+    // changeTheme() {
+    //   this.isLightTheme = !this.isLightTheme;
+    //   document.querySelector('body')?.classList.toggle('light-theme');
+    //   localStorage.setItem('is-light-theme', this.isLightTheme);
+    // },
+    // setTheme() {
+    //   document.querySelector('body')?.classList.toggle('light-theme');
+    //   localStorage.setItem('is-light-theme', this.isLightTheme);
+    // },
     setSearchQuery(value: string) {
       this.searchQuery = value;
     },
-    setSelectAuthor(option: Author | null) {
+    setSelectAuthor(option: Author) {
       this.authorSelect = option;
     },
-    setSelectLocation(option: Location | null) {
+    setSelectLocation(option: Location) {
       this.locationSelect = option;
     },
     setSelectCreated(created: Created) {

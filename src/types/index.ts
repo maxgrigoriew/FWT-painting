@@ -1,6 +1,6 @@
 export interface Painting {
   id: number;
-  authorId: string;
+  authorId: number;
   created: string;
   imageUrl: string;
   locationId: number;
@@ -10,13 +10,18 @@ export interface Painting {
 }
 
 export interface Author {
-  id: number;
+  id: number | null;
   name: string;
 }
 
 export interface Location {
-  id: number;
+  id: number | null;
   name: string;
+}
+
+export interface MapLocation {
+  id: number | null;
+  location?: string;
 }
 
 export interface Created {

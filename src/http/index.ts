@@ -1,15 +1,13 @@
-import axios from 'axios'
+import axios from 'axios';
 
-export const API_URL = 'https://test-front.framework.team'
+export const API_URL = 'https://test-front.framework.team';
 
 const config = {
-  baseURL: API_URL
-}
+  baseURL: API_URL,
+};
 
-const http = axios.create(config)
+const http = axios.create(config);
 
-http.interceptors.request.use((config) => {
-  return config
-})
+http.interceptors.request.use((config) => config);
 
-export { http }
+export { http };

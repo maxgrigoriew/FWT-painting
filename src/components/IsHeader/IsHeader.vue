@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useStore } from '@/store/use-store';
+import useStore from '@/store/use-store';
 
 const store = useStore();
 </script>
@@ -10,12 +10,16 @@ const store = useStore();
       <div :class="$style.header__inner">
         <a href="#" :class="$style.header__logo">
           <svg :class="$style.pagination__arrow" width="68" height="68">
-            <use xlink:href="@/assets/images/sprite.svg#logo"></use>
+            <use xlink:href="@/assets/images/sprite.svg#logo" />
           </svg>
         </a>
-        <button :class="$style.header__icon" @click="store.changeTheme">
+        <button
+          :class="$style.header__icon"
+          @click="store.changeTheme"
+          type="button"
+        >
           <svg :class="$style.pagination__arrow1" width="22" height="22">
-            <use xlink:href="@/assets/images/sprite.svg#theme"></use>
+            <use xlink:href="@/assets/images/sprite.svg#theme" />
           </svg>
         </button>
       </div>

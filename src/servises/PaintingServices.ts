@@ -8,16 +8,16 @@ export default class PaintingServices {
     authorId?: number | null,
     locationId?: number | null,
     createdSelectFrom?: string,
-    createdSelectBefore?: string
+    createdSelectBefore?: string,
   ) {
     const params = {
       _page: currentPage,
       _limit: limitPages,
       q: searchQuery,
-      authorId: authorId,
-      locationId: locationId,
+      authorId,
+      locationId,
       created_gte: createdSelectFrom,
-      created_lte: createdSelectBefore
+      created_lte: createdSelectBefore,
     };
 
     for (const item in params) {
@@ -27,7 +27,7 @@ export default class PaintingServices {
     }
 
     return http.get('/paintings', {
-      params
+      params,
     });
   }
 
@@ -43,7 +43,7 @@ export default class PaintingServices {
     const [paintings, authors, locations] = await Promise.all([
       PaintingServices.getPaintings(),
       PaintingServices.getAuthors(),
-      PaintingServices.getLocations()
+      PaintingServices.getLocations(),
     ]);
     return [paintings, authors, locations];
   }

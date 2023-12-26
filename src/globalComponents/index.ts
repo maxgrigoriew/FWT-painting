@@ -7,5 +7,5 @@ export default {
   IsInput,
   IsSelect,
   IsPagination,
-  IsLoader
+  IsLoader,
 };

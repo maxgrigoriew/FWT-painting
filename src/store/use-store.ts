@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
-import PaintingServices from './../servises/PaintingServices';
+import PaintingServices from '../servises/PaintingServices';
 import {
   type Author,
   type Created,
   type Location,
   type MapLocation,
-  type Painting
-} from './../types/index';
+  type Painting,
+} from '../types/index';
 
 interface State {
   pages: number;
@@ -17,17 +17,14 @@ interface State {
   setLastPage: () => void;
   decrementPage: () => void;
   incrementPage: () => void;
-  setPage: (pagination: number) => void;
   authorSelect: Author;
-  setSelectAuthor: (author: Author) => void;
   locationSelect: Location;
-  setSelectLocation: (location: Location | null) => void;
   createdSelect: Created;
-  setSelectCreated: (created: Created) => void;
   concatArray: Painting[];
   authorId: null | number;
   searchQuery: string;
   setSearchQuery: (value: string) => void;
+
   mapAuthors: Author[];
   mapLocations: Location[];
   changeTheme: () => void;
@@ -38,10 +35,10 @@ interface State {
   isLightTheme: boolean;
 }
 
-export const useStore = defineStore('store', {
-  state: (): State => {
-    //@ts-ignore
-    return {
+export default defineStore('store', {
+  state: (): State =>
+    // @ts-ignore
+    ({
       limitPages: 12,
       pages: 1,
       currentPage: 1,
@@ -53,57 +50,54 @@ export const useStore = defineStore('store', {
       searchQuery: '',
       authorSelect: {
         id: null,
-        name: ''
+        name: '',
       },
       locationSelect: {
         id: null,
-        name: ''
+        name: '',
       },
       createdSelect: {
         from: '',
-        before: ''
-      }
-    };
-  },
+        before: '',
+      },
+    }),
   getters: {
-    mapAuthors: (state) => {
-      return state.authors.map((item) => ({
+    mapAuthors: (state) =>
+      state.authors.map((item) => ({
         id: item.id,
-        name: item.name
-      }));
-    },
-    mapLocations: (state) => {
-      return state.locations.map((location: MapLocation) => ({
+        name: item.name,
+      })),
+    mapLocations: (state) =>
+      state.locations.map((location: MapLocation) => ({
         id: location.id,
-        name: location.location
-      }));
-    },
+        name: location.location,
+      })),
     concatArray: (state) => {
       const arrayWidthName = state.paintings.map((painting) => {
-        const author = state.authors.find((author) => {
-          return painting.authorId === author.id;
-        });
+        const author = state.authors.find(
+          (authorArg) => painting.authorId === authorArg.id,
+        );
 
         if (author) {
           return {
             ...painting,
-            authorName: author.name
+            authorName: author.name,
           };
         }
       });
 
       return arrayWidthName.map((locationArg) => {
         const location = state.locations.find(
-          (local) => locationArg?.locationId === local.id
+          (local) => locationArg?.locationId === local.id,
         );
         if (location) {
           return {
             ...locationArg,
-            localName: location.location
+            localName: location.location,
           };
         }
       });
-    }
+    },
   },
 
   actions: {
@@ -135,14 +129,14 @@ export const useStore = defineStore('store', {
             this.authorSelect?.id,
             this.locationSelect?.id,
             this.createdSelect.from,
-            this.createdSelect.before
+            this.createdSelect.before,
           ),
           PaintingServices.getAuthors(),
-          PaintingServices.getLocations()
+          PaintingServices.getLocations(),
         ]);
 
         this.pages = Math.ceil(
-          +paintings.headers['x-total-count'] / this.limitPages
+          +paintings.headers['x-total-count'] / this.limitPages,
         );
 
         this.paintings = [...paintings.data];
@@ -183,9 +177,6 @@ export const useStore = defineStore('store', {
     //   document.querySelector('body')?.classList.toggle('light-theme');
     //   localStorage.setItem('is-light-theme', this.isLightTheme);
     // },
-    setSearchQuery(value: string) {
-      this.searchQuery = value;
-    },
     setSelectAuthor(option: Author) {
       this.authorSelect = option;
     },
@@ -194,6 +185,6 @@ export const useStore = defineStore('store', {
     },
     setSelectCreated(created: Created) {
       this.createdSelect = { ...created };
-    }
-  }
+    },
+  },
 });

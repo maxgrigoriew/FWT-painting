@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Painting } from '@/types';
-import IsPaintingListItem from './../IsPaintingListItem/IsPaintingListItem.vue';
+import IsPaintingListItem from '../IsPaintingListItem/IsPaintingListItem.vue';
 
 interface Props {
   paintings: Painting[];

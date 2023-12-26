@@ -2,31 +2,32 @@
 import { onMounted, watch } from 'vue';
 import IsHeader from '@/components/IsHeader/IsHeader.vue';
 import IsPaintingList from '@/components/IsPaintingList/IsPaintingList.vue';
-import { useStore } from '@/store/use-store';
-const store = useStore();
+import useStore from './store/use-store';
 import { debounce } from './utils/debounce';
+
+const store = useStore();
 
 watch(
   () => store.searchQuery,
-  debounce(function (newVal: string) {
+  debounce((newVal: string) => {
     store.setSearchQuery(newVal);
     store.fetchAll();
-  }, 500)
+  }, 500),
 );
 
 watch(
   store.createdSelect,
-  debounce(function (newVal: { from: string; before: string }) {
+  debounce((newVal: { from: string; before: string }) => {
     store.createdSelect.from = newVal.from;
     store.createdSelect.before = newVal.before;
     store.fetchAll();
-  }, 500)
+  }, 500),
 );
 watch(
   () => [store.authorSelect?.id, store.locationSelect?.id],
   () => {
     store.fetchAll();
-  }
+  },
 );
 
 onMounted(() => {
@@ -45,20 +46,20 @@ onMounted(() => {
         v-model="store.authorSelect.name"
         :options="store.mapAuthors"
         @option="store.setSelectAuthor"
-        >Author</is-select
+      >Author</is-select
       >
       <is-select
         class="location-select"
         v-model="store.locationSelect.name"
         :options="store.mapLocations"
         @option="store.setSelectLocation"
-        >Location</is-select
+      >Location</is-select
       >
       <is-select
         :is-filter="true"
         v-model:from="store.createdSelect.from"
         v-model:before="store.createdSelect.before"
-        >Created</is-select
+      >Created</is-select
       >
     </div>
 

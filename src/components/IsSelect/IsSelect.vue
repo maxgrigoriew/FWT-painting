@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Author, Created, Location } from '@/types';
 import { computed, onMounted, ref } from 'vue';
+import type { Author, Created, Location } from '@/types';
 
 interface Props {
   from?: string;
@@ -17,9 +17,7 @@ const emits = defineEmits<{
   'update:before': [value: string];
 }>();
 
-const selected = computed(() =>
-  props.options && props.options?.length > 0 ? props.options[0].name : null
-);
+const selected = computed(() => (props.options && props.options?.length > 0 ? props.options[0].name : null));
 
 const open = ref(false);
 
@@ -36,7 +34,7 @@ onMounted(() => {});
     >
       <div :class="$style.selected__title">
         {{ modelValue }}
-        <slot v-if="!modelValue"></slot>
+        <slot v-if="!modelValue" />
       </div>
     </div>
     <svg
@@ -46,7 +44,7 @@ onMounted(() => {});
       width="8"
       height="8"
     >
-      <use xlink:href="@/assets/images/sprite.svg#close"></use>
+      <use xlink:href="@/assets/images/sprite.svg#close" />
     </svg>
     <div :class="$style.items">
       <div :class="$style.items__select" v-if="!isFilter">

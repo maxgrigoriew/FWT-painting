@@ -168,15 +168,13 @@ export default defineStore('store', {
       }
       this.currentPage -= 1;
     },
-    // changeTheme() {
-    //   this.isLightTheme = !this.isLightTheme;
-    //   document.querySelector('body')?.classList.toggle('light-theme');
-    //   localStorage.setItem('is-light-theme', this.isLightTheme);
-    // },
-    // setTheme() {
-    //   document.querySelector('body')?.classList.toggle('light-theme');
-    //   localStorage.setItem('is-light-theme', this.isLightTheme);
-    // },
+    changeTheme() {
+      this.isLightTheme = !this.isLightTheme;
+      document.querySelector('body')?.classList.toggle('light-theme');
+    },
+    setTheme() {
+      document.querySelector('body')?.classList.toggle('light-theme');
+    },
     setSelectAuthor(option: Author) {
       this.authorSelect = option;
     },

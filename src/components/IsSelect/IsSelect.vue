@@ -16,17 +16,14 @@ const emits = defineEmits<{
   'update:from': [value: string];
   'update:before': [value: string];
 }>();
-
 const selected = computed(() => (props.options && props.options?.length > 0 ? props.options[0].name : null));
-
 const open = ref(false);
-
 onMounted(() => {});
 </script>
 <template>
   <div
-    :class="[$style.customSelect, open === true ? $style.open : '']"
     v-click-outside="() => (open = false)"
+    :class="[$style.customSelect, open === true ? $style.open : '']"
   >
     <div
       :class="[$style.selected, open === true ? $style.show : '']"
@@ -39,19 +36,21 @@ onMounted(() => {});
     </div>
     <svg
       v-if="open && modelValue"
-      @click="[(open = false), emits('option', '')]"
       :class="$style.selected__close"
       width="8"
       height="8"
+      @click="[(open = false), emits('option', '')]"
     >
       <use xlink:href="@/assets/images/sprite.svg#close" />
     </svg>
     <div :class="$style.items">
-      <div :class="$style.items__select" v-if="!isFilter">
+      <div
+        v-if="!isFilter"
+        :class="$style.items__select">
         <div
-          :class="$style.item"
           v-for="option of options"
           :key="option.name"
+          :class="$style.item"
           @click="
             [(selected = option.name), (open = false), emits('option', option)]
           "
@@ -59,7 +58,9 @@ onMounted(() => {});
           <div :class="$style.item__title">{{ option.name }}</div>
         </div>
       </div>
-      <div v-else :class="$style.items__filter">
+      <div
+        v-else
+        :class="$style.items__filter">
         <is-input
           placeholder="from"
           :value="from"

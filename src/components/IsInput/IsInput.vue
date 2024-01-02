@@ -9,14 +9,17 @@ const emits = defineEmits<{
 </script>
 
 <template>
-  <input
-    :class="$style.input"
-    type="text"
-    placeholder="Введите текст"
-    :value="props.modelValue"
-    @input="
-      emits('update:modelValue', ($event.target as HTMLInputElement).value)
-    "
-  />
+  <label>
+    <input
+      :id="$style.formControl__input"
+      :class="$style.formControl__input"
+      type="text"
+      placeholder="Введите текст"
+      :value="props.modelValue"
+      @input="
+        emits('update:modelValue', ($event.target as HTMLInputElement).value)
+      "
+    />
+  </label>
 </template>
 <style module src="./IsInput.scss"></style>

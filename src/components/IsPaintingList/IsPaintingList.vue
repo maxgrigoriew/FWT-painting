@@ -10,14 +10,14 @@ const props = defineProps<Props>();
 
 <template>
   <div :class="$style.paintingWrapper">
-    <div :class="$style.paintingList" v-if="props.paintings.length">
+    <div v-if="props.paintings.length" :class="$style.paintingList">
       <is-painting-list-item
         v-for="item in paintings"
         :key="item.id"
         :painting="item"
       />
     </div>
-    <div :class="$style.paintingList" v-else>Список пуст</div>
+    <div v-else :class="$style.paintingList">Список пуст</div>
   </div>
 </template>
 <style module src="./IsPaintingList.scss"></style>

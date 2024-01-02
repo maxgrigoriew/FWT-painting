@@ -19,7 +19,6 @@ export default class PaintingServices {
       created_gte: createdSelectFrom,
       created_lte: createdSelectBefore,
     };
-
     for (const item in params) {
       if (!params[item as keyof typeof params]) {
         delete params[item as keyof typeof params];

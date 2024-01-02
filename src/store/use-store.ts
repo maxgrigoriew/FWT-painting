@@ -23,7 +23,7 @@ interface State {
   concatArray: Painting[];
   authorId: null | number;
   searchQuery: string;
-  setSearchQuery: (value: string) => void;
+  setSearchQuery: () => void;
 
   mapAuthors: Author[];
   mapLocations: Location[];
@@ -36,31 +36,29 @@ interface State {
 }
 
 export default defineStore('store', {
-  state: (): State =>
-    // @ts-ignore
-    ({
-      limitPages: 12,
-      pages: 1,
-      currentPage: 1,
-      paintings: [],
-      authors: [],
-      locations: [],
-      isLightTheme: false,
-      isLoading: false,
-      searchQuery: '',
-      authorSelect: {
-        id: null,
-        name: '',
-      },
-      locationSelect: {
-        id: null,
-        name: '',
-      },
-      createdSelect: {
-        from: '',
-        before: '',
-      },
-    }),
+  state: (): State => ({
+    limitPages: 12,
+    pages: 1,
+    currentPage: 1,
+    paintings: [],
+    authors: [],
+    locations: [],
+    isLightTheme: false,
+    isLoading: false,
+    searchQuery: '',
+    authorSelect: {
+      id: null,
+      name: '',
+    },
+    locationSelect: {
+      id: null,
+      name: '',
+    },
+    createdSelect: {
+      from: '',
+      before: '',
+    },
+  }),
   getters: {
     mapAuthors: (state) =>
       state.authors.map((item) => ({
@@ -86,21 +84,26 @@ export default defineStore('store', {
         }
       });
 
-      return arrayWidthName.map((locationArg) => {
-        const location = state.locations.find(
-          (local) => locationArg?.locationId === local.id,
-        );
-        if (location) {
-          return {
-            ...locationArg,
-            localName: location.location,
-          };
-        }
-      });
+      if (arrayWidthName) {
+        return arrayWidthName.map((locationArg) => {
+          const location = state.locations.find(
+            (local) => locationArg?.locationId === local.id,
+          );
+          if (location) {
+            return {
+              ...locationArg,
+              localName: location.location,
+            };
+          }
+        });
+      }
     },
   },
 
   actions: {
+    setSearchQuery(value: string) {
+      this.searchQuery = value;
+    },
     async fetchAuthors() {
       try {
         const response = await PaintingServices.getAuthors();

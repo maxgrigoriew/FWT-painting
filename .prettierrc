@@ -2,11 +2,9 @@
   "trailingComma": "all",
   "tabWidth": 2,
   "useTabs": false,
-  "semi": true,
   "singleQuote": true,
   "printWidth": 80,
   "editor.formatOnSave": true,
   "proseWrap": "always",
-  "requireConfig": false,
-  "bracketSpacing": true
+  "requireConfig": true
 }

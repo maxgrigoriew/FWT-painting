@@ -13,11 +13,7 @@ const store = useStore();
             <use xlink:href="@/assets/images/sprite.svg#logo" />
           </svg>
         </a>
-        <button
-          :class="$style.header__icon"
-          @click="store.changeTheme"
-          type="button"
-        >
+        <button :class="$style.header__icon" @click="store.changeTheme">
           <svg :class="$style.pagination__arrow1" width="22" height="22">
             <use xlink:href="@/assets/images/sprite.svg#theme" />
           </svg>

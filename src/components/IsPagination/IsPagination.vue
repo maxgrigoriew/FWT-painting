@@ -7,12 +7,10 @@ interface Props {
   currentPage: number;
 }
 const store = useStore();
-
 const props = defineProps<Props>();
 const emits = defineEmits<{
   fetchData: [value: void];
 }>();
-
 watch(
   () => props.currentPage,
   () => {
@@ -46,12 +44,12 @@ watch(
       </svg>
     </div>
     <div
+      v-for="(pagination, ind) in pages"
+      :key="ind"
       :class="[
         pagination === store.currentPage ? $style.active : '',
         $style.pagination__item,
       ]"
-      v-for="(pagination, ind) in pages"
-      :key="ind"
       @click="store.setPage(pagination)"
     >
       <div>{{ pagination }}</div>

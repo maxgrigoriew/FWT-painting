@@ -6,7 +6,6 @@ import useStore from './store/use-store';
 import { debounce } from './utils/debounce';
 
 const store = useStore();
-
 watch(
   () => store.searchQuery,
   debounce((newVal: string) => {
@@ -14,7 +13,6 @@ watch(
     store.fetchAll();
   }, 500),
 );
-
 watch(
   store.createdSelect,
   debounce((newVal: { from: string; before: string }) => {
@@ -29,7 +27,6 @@ watch(
     store.fetchAll();
   },
 );
-
 onMounted(() => {
   store.fetchAll();
 });
@@ -40,25 +37,27 @@ onMounted(() => {
 
   <div class="container">
     <div class="inputs">
-      <is-input v-model="store.searchQuery" placeholder="Name" />
+      <is-input
+        v-model="store.searchQuery"
+        placeholder="Name" />
       <is-select
-        class="author-select"
-        v-model="store.authorSelect.name"
         :options="store.mapAuthors"
+        v-model="store.authorSelect.name"
+        class="author-select"
         @option="store.setSelectAuthor"
       >Author</is-select
       >
       <is-select
-        class="location-select"
         v-model="store.locationSelect.name"
+        class="location-select"
         :options="store.mapLocations"
         @option="store.setSelectLocation"
       >Location</is-select
       >
       <is-select
-        :is-filter="true"
         v-model:from="store.createdSelect.from"
         v-model:before="store.createdSelect.before"
+        :is-filter="true"
       >Created</is-select
       >
     </div>

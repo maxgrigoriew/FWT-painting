@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue';
+import { watch, computed, useCssModule } from 'vue';
 import useStore from '@/store/use-store';
 
 interface Props {
@@ -8,6 +8,7 @@ interface Props {
 }
 const store = useStore();
 const props = defineProps<Props>();
+const $style = useCssModule();
 const emits = defineEmits<{
   fetchData: [value: void];
 }>();
@@ -17,15 +18,16 @@ watch(
     emits('fetchData');
   },
 );
+
+const disabled = computed(() =>
+  store.currentPage === 1 ? $style.disabled : '',
+);
 </script>
 
 <template>
   <div :class="$style.pagination">
     <div
-      :class="[
-        store.currentPage === 1 ? $style.disabled : '',
-        $style.pagination__item,
-      ]"
+      :class="[$style.pagination__item, disabled]"
       @click="store.setFirstPage"
     >
       <svg :class="$style.pagination__arrow" width="14" height="14">

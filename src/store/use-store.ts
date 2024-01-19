@@ -12,22 +12,14 @@ interface State {
   pages: number;
   currentPage: number;
   isLoading: boolean;
-  fetchAll: () => void;
-  setFirstPage: () => void;
-  setLastPage: () => void;
-  decrementPage: () => void;
-  incrementPage: () => void;
   authorSelect: Author;
   locationSelect: Location;
   createdSelect: Created;
   concatArray: Painting[];
   authorId: null | number;
   searchQuery: string;
-  setSearchQuery: () => void;
-
   mapAuthors: Author[];
   mapLocations: Location[];
-  changeTheme: () => void;
   paintings: Painting[];
   limitPages: number;
   authors: Author[];
@@ -58,6 +50,10 @@ export default defineStore('store', {
       from: '',
       before: '',
     },
+    concatArray: [],
+    authorId: null,
+    mapAuthors: [],
+    mapLocations: [],
   }),
   getters: {
     mapAuthors: (state) =>
